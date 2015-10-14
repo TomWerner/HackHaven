@@ -1,2 +1,10 @@
-%h1 Announcements#index
-%p Find me in app/views/announcements/index.html.haml
+%h1 Announcements
+
+- @announcements.each do |announcement|
+    %div.panel.panel-default
+        %div.panel-heading 
+            =announcement.title
+        %div.panel-body 
+            =announcement.content
+
+
