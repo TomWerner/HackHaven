@@ -22,3 +22,12 @@
         %ul.nav.navbar-nav.navbar-right
           %li
             =link_to 'Right Item', '#'
+            
+  %body
+    #main.container
+      - if flash[:notice]
+        #notice.message= flash[:notice]
+      - elsif flash[:warning]
+        #warning.message= flash[:warning]
+
+      = yield
