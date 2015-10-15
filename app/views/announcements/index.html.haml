@@ -2,9 +2,15 @@
 
 - @announcements.each do |announcement|
     %div.panel.panel-default
-        %div.panel-heading 
-            =announcement.title
+        %div.panel-heading
+            %div.pull-left
+                =announcement.title
+            %div.text-right
+                =announcement.created_at.strftime("%B %d, %Y")
         %div.panel-body 
-            =announcement.content
+            %pre.blank-pre
+                = preserve(announcement.content)
+            %div.pull-right
+                =link_to "<< Edit >>", edit_announcement_path(announcement)
 
 
