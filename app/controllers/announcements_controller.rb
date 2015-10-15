@@ -4,7 +4,7 @@ class AnnouncementsController < ApplicationController
   end
 
   def index
-    @announcements = Announcement.all
+    @announcements = Announcement.order(:created_at => :desc)
   end
 
   def edit
