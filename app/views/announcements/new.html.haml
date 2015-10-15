@@ -1,2 +1,13 @@
-%h1 Announcements#new
-%p Find me in app/views/announcements/new.html.haml
+%h2 Create Announcement (Please admins only)
+
+%div.central-form
+  = form_tag announcements_path do
+
+    %div.form-group
+      = label :announcement, :title, 'Title'
+      = text_field :announcement, 'title', class: "form-control"
+    %div.form-group
+      = label :announcement, :content, 'Content'
+      = text_area :announcement, 'content', class: "form-control"
+
+    = submit_tag 'Save Changes', class: "btn btn-primary"
