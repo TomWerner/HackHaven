@@ -43,7 +43,7 @@ end
 
 group :test do
   gem 'rspec-expectations'
-  gem 'cucumber-rails' 
+  gem 'cucumber-rails', :require => false
 end
 
 group :production do
