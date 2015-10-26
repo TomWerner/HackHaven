@@ -9,7 +9,7 @@
                 =announcement.created_at.strftime("%B %d, %Y")
         %div.panel-body 
             %pre.blank-pre
-                = preserve(announcement.content)
+                = announcement.content
             %div.pull-right
                 =link_to "<< Edit >>", edit_announcement_path(announcement)
 
