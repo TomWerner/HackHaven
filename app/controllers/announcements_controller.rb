@@ -18,13 +18,20 @@ class AnnouncementsController < ApplicationController
   def update
     @announcement = Announcement.find params[:id]
     @announcement.update_attributes!(announcement_params)
-    flash[:notice] = "#{@announcement.title} was successfully updated."
+    flash[:notice] = "'#{@announcement.title}' was successfully updated."
     redirect_to announcements_path
   end
 
   def create
     @announcement = Announcement.create!(announcement_params)
-    flash[:notice] = "#{@announcement.title} was successfully created."
+    flash[:notice] = "'#{@announcement.title}' was successfully created."
+    redirect_to announcements_path
+  end
+  
+  def destroy
+    @announcement = Announcement.find(params[:id])
+    @announcement.destroy
+    flash[:notice] = "'#{@announcement.title}' was successfully deleted."
     redirect_to announcements_path
   end
 end

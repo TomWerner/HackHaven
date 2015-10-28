@@ -19,5 +19,52 @@ RSpec.describe AnnouncementsController, type: :controller do
       expect(announcements[1].title).to eq("First announcement")
     end
   end
-
+  
+  describe 'GET #edit' do
+    it 'assigns the @announcement variable' do
+      fake_result = double('announcement')
+      expect(Announcement).to receive(:find).with('1').and_return(fake_result)
+      get :edit, id: 1
+      expect(assigns(:announcement)).to eq(fake_result)
+    end
+  end
+  
+  describe '#update' do
+    it 'assigns updates @announcement variable' do
+      update = {announcement: {title: "New title", content: "New content"}}
+      announcement = Announcement.create(title: "Title", content: "Content")
+      expect(Announcement).to receive(:find).with("1").and_return(announcement)
+      expect(announcement).to receive(:update_attributes!).with(update[:announcement])
+      expect(announcement).to receive(:title).and_return("New title")
+      update[:id] = 1
+      post :update, update
+      expect(flash[:notice]).to eq("'New title' was successfully updated.")
+      expect(response).to redirect_to(announcements_path)
+    end
+  end
+  
+  describe '#create' do
+    it 'creates the announcement' do
+      create_params = {announcement: {title: "Title", content: "Content"}}
+      announcement = Announcement.create(title: "Title", content: "Content")
+      expect(Announcement).to receive(:create!).with(create_params[:announcement]).and_return(announcement)
+      expect(announcement).to receive(:title).and_return("Title")
+      post :create, create_params
+      expect(flash[:notice]).to eq("'Title' was successfully created.")
+      expect(response).to redirect_to(announcements_path)
+    end
+  end
+  
+  describe '#destroy' do
+    it 'destroys the announcement' do
+      destroy_params = {id: 1, announcement: {title: "Title", content: "Content"}}
+      announcement = Announcement.create(title: "Title", content: "Content")
+      expect(Announcement).to receive(:find).with("1").and_return(announcement)
+      expect(announcement).to receive(:destroy)
+      expect(announcement).to receive(:title).and_return("Title")
+      post :destroy, destroy_params
+      expect(flash[:notice]).to eq("'Title' was successfully deleted.")
+      expect(response).to redirect_to(announcements_path)
+    end
+  end
 end
