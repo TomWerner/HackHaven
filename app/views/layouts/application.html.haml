@@ -32,7 +32,11 @@
             
         %ul.nav.navbar-nav.navbar-right
           %li
-            =link_to 'Right Item', '#'
+            -if !@current_user
+              = button_to 'Sign up/Login', login_path, :method => :get, :id => 'login'
+            -else   
+              You are logged in as #{@current_user.name}
+              = button_to 'Logout', logout_path, :method => :delete, :id => 'logout'
             
   %body
     #main.container
