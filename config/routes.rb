@@ -55,4 +55,8 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  
+  
+  # This has to go at the end
+  get '/', :controller => 'home', :action => :index
 end
