@@ -1,0 +1,13 @@
+%h1 Login
+
+= form_tag login_create_path do
+
+  = label :user, :email, 'E-Mail'
+  = text_field :user, 'email', :id => 'login_email'
+  
+  = label :user, :password, 'Password'
+  = password_field :user, 'password', :id => 'login_password'
+
+  = submit_tag 'Login to my account', :id => 'login_submit'
+  
+= link_to 'Sign up for an account', new_user_path, :id => 'signup'
