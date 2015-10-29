@@ -12,5 +12,6 @@
                 = announcement.content
             %div.pull-right
                 =link_to "<< Edit >>", edit_announcement_path(announcement)
+                = link_to '<< Del >>', announcement_path(announcement), :method => :delete, :confirm => "Are you sure? Please don\'t do this if you aren't an admin..."
 
 
