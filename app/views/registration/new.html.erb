@@ -1,0 +1,37 @@
+<h1>Registration</h1>
+<br>
+<div class="panel.panel-default">
+    <div class="panel-heading">
+        <div class="pull-left">
+            Details:
+        </div>
+    </div>
+    <div class="panel-body">
+    <%= form_for :registration, url: {action: "create"} do |f| %>
+       <p>
+            <%= f.label :firstname, 'First Name' %><br>
+            <%= f.text_field :firstname %>
+        </p>
+        
+        <p>
+            <%= f.label :lastname, 'Last Name' %><br>
+            <%= f.text_field :lastname %>
+        </p>
+        
+        <p>
+            <%= f.label :email, 'Email' %><br>
+            <%= f.text_field :email %>
+        </p>
+        
+        <p>
+            <%= f.label :contestname, 'Contest Name' %><br>
+            <%= f.select :contestname, [['Contest 1','contest1'],['Contest 2','contest2'],['Contest 3','contest3']] %>
+        </p>
+        <%= f.hidden_field(:userid, value: @currentuserid) %>
+        <p>
+            <%= f.submit 'Submit', :class => "btn btn-info" %>
+        </p>
+    
+    <% end %>
+</div>
+</div>

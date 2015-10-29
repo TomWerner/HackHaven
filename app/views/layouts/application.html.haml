@@ -6,6 +6,8 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'
     = stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css'
+    = stylesheet_link_tag 'application'
+    = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Poiret+One'
     = javascript_include_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'
     = csrf_meta_tags
   
@@ -23,10 +25,10 @@
       #nav-collapse.collapse.navbar-collapse
         %ul.nav.navbar-nav
           %li.active
-            %a{href: '#'} Link
+            =link_to "Home", controller: "announcements", action: "index"
           
           %li
-            %a{href: '#'} Link2
+            =link_to "Register!", controller: "registration", action: "new"
             
         %ul.nav.navbar-nav.navbar-right
           %li
