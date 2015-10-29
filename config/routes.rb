@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :announcements
   resources :registration
-  root 'announcements#index'
+  root 'home#index'
   resources :users
   match '/login', to: 'sessions#new', via: :get
   match '/login_create', to: 'sessions#create', via: :post  
@@ -61,4 +61,8 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  
+  
+  # This has to go at the end
+  get '/', :controller => 'home', :action => :index
 end
