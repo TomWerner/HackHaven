@@ -1,10 +1,14 @@
 class RegistrationController < ApplicationController
-    def registration_params
-    params.require(:registration).permit(:userid, :contestname, :email, :firstname, :lastname)
+  before_filter :set_current_user
+    
+  def registration_params
+    params.require(:registration).permit(:userid, :contestname, :email, :firstname, :lastname, :email, :year)
   end
 
   def index
-    @regstrations = Registration.order(:created_at => :desc)
+    if @current_user != nil
+     @registrations = Registration.order(:created_at => :desc).where(:userid => @current_user.id)
+   end
   end
 
   def edit
@@ -12,9 +16,9 @@ class RegistrationController < ApplicationController
   end
 
   def new
-    #FOR when there's a user table
-    #@currentuser = User.find session[:user_id]
-    @currentuserid = 1;
+    if @current_user != nil
+     @currentuserid = @current_user.id;
+    end
   end
   
   def update

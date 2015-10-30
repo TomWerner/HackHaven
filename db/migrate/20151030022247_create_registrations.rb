@@ -6,6 +6,8 @@ class CreateRegistrations < ActiveRecord::Migration
       t.string :email
       t.string :firstname
       t.string :lastname
+      t.string :year
+      t.string :major
 
       t.timestamps null: false
     end

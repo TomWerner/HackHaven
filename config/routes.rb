@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :announcements
   resources :registration
-  root 'home#index'
+  #root 'home#index'
   resources :users
   match '/login', to: 'sessions#new', via: :get
   match '/login_create', to: 'sessions#create', via: :post  

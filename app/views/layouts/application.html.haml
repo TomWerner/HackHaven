@@ -25,10 +25,11 @@
       #nav-collapse.collapse.navbar-collapse
         %ul.nav.navbar-nav
           %li.active
-            =link_to "Home", controller: "announcements", action: "index"
-            #%a{href: '/announcements'} Announcements
+            %a{href: '/announcements'} Announcements
           %li
             =link_to "Register!", controller: "registration", action: "new"
+          %li
+            =link_to "Your Registrations", controller: "registration", action: "index"
             
         %ul.nav.navbar-nav.navbar-right
           %li
