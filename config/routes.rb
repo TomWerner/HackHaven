@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
   resources :announcements
+  resources :questions do
+    resources :testcases
+    post '/submit' => 'questions#submit'
+  end
+  
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -55,7 +61,6 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-  
   
   # This has to go at the end
   get '/', :controller => 'home', :action => :index

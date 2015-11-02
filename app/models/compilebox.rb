@@ -33,7 +33,10 @@ class Compilebox
     end
     
     def self.get_test_pairs(question_id)
-        return [] # get from Questions, [[stdin, stdout], [stdin, stdout]]
+        testcases = Question.find(question_id).testcases
+        result = []
+        testcases.each { |testcase| result.push([testcase.stdin, testcase.stdout]) }
+        return result
     end
     
     def self.submit_code(question_id, language_id, code)
@@ -71,11 +74,11 @@ class Compilebox
     end
     
     def self.wrong_output?(expected_output)
-        self.parse_output != expected_output
+        self.parse_output.gsub(/\r\n/, "\n").chomp != expected_output.gsub(/\r\n/, "\n").chomp
     end
     
     def self.wrong_output_message(expected_output)
-        "Incorrect Answer:\n\nExpected: #{expected_output}\nActual: #{self.parse_output}"
+        "Incorrect Answer:\n\nExpected:\n#{expected_output}\nActual:\n#{self.parse_output}"
     end
     
     def self.correct_message

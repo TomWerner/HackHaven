@@ -1,0 +1,15 @@
+%h2 #{@question.title}
+
+%pre.blank-pre
+    = @question.description
+    
+= form_tag question_submit_path(@question), :method => :post, class: "form-group" do
+    %div.padded-input
+        = label :submission, :language, 'Language'
+        %div
+            = select :submission, :language, options_for_select(@languages), class: "form-control"
+    %div.padded-input
+        = label :submission, :code, "Code"
+        = text_area :submission, 'code', rows:"10", class: "form-control"
+        
+    = submit_tag "Submit code", class: "btn btn-primary"
