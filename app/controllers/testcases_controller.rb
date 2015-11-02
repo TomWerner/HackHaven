@@ -1,20 +1,27 @@
 class TestcasesController < ApplicationController
+  #before_filter :set_current_question
+  before_filter :has_question
+  
+  def has_question
+    unless (@question = Question.find_by_id(params[:question_id]))
+      flash[:warning] = "Invalid question id."
+      redirect_to questions_path
+    end
+  end
+  
   def testcase_params
     params.require(:testcase).permit(:stdin, :stdout)
   end
   
   def edit
-    @question = Question.find params[:question_id]
     @testcase = Testcase.find params[:id]
   end
 
   def new
-    @question = Question.find params[:question_id]
     #just displays the new template
   end
   
   def update
-    @question = Question.find params[:question_id]
     @testcase = Testcase.find params[:id]
     @testcase.update_attributes!(testcase_params)
     flash[:notice] = "Test case successfully updated."
@@ -22,7 +29,6 @@ class TestcasesController < ApplicationController
   end
 
   def create
-    @question = Question.find params[:question_id]
     @testcase = Testcase.create!(testcase_params)
     @question.testcases.push(@testcase)
     flash[:notice] = "Test case successfully created."
@@ -30,7 +36,6 @@ class TestcasesController < ApplicationController
   end
   
   def destroy
-    @question = Question.find params[:question_id]
     @testcase = Testcase.find(params[:id])
     @testcase.destroy
     flash[:notice] = "Test case was successfully deleted."
