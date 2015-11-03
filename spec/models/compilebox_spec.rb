@@ -56,7 +56,7 @@ RSpec.describe Compilebox do
           
           result = Compilebox.submit_code(1, "0", code)
           expect(result.length).to eq(1)
-          expect(result[0]).to eq("Incorrect Answer:\n\nExpected: *\n**\n***\nActual: ***\n**\n*")
+          expect(result[0]).to eq("Incorrect Answer:\n\nExpected:\n*\n**\n***\nActual:\n***\n**\n*")
        end
        it 'should submit code for each test case (correct output)' do
           test_pairs = [['3', "*\n**\n***"]]
@@ -69,6 +69,23 @@ RSpec.describe Compilebox do
           result = Compilebox.submit_code(1, "0", code)
           expect(result.length).to eq(1)
           expect(result[0]).to eq("Correct!")
+       end
+    end
+    
+    describe "get_test_pairs" do
+       it "should return the stdin and stdout pairs" do
+          question = Question.create(title: "Title", description: "Question")
+          expect(Question).to receive(:find).with("123").and_return(question)
+          testcases = [Testcase.create(stdin: "in1", stdout: "out1"),
+                        Testcase.create(stdin: "in2", stdout: "out2"),
+                        Testcase.create(stdin: "in3", stdout: "out3")]
+          expect(question).to receive(:testcases).and_return(testcases)
+          
+          results = Compilebox.get_test_pairs("123")
+          
+          expect(results[0]).to eq(["in1", "out1"])
+          expect(results[1]).to eq(["in2", "out2"])
+          expect(results[2]).to eq(["in3", "out3"])
        end
     end
 end

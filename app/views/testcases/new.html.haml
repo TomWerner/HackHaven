@@ -1,0 +1,12 @@
+%h1 New testcase for '#{@question.title}'
+
+= form_tag question_testcases_path do
+
+  %div.form-group
+    = label :testcase, :stdin, 'Standard Input'
+    = text_area :testcase, 'stdin', rows:"5", class: "form-control"
+  %div.form-group
+    = label :testcase, :stdout, 'Standard Output'
+    = text_area :testcase, 'stdout', rows:"5", class: "form-control"
+
+  = submit_tag 'Add Testcase', class: "btn btn-primary"
