@@ -26,16 +26,10 @@
         %ul.nav.navbar-nav
           %li{:class => (controller.class == AnnouncementsController ? 'active' : '')}
             %a{href: '/announcements'} Announcements
-<<<<<<< HEAD
-          
-          %li{:class => (controller.class == Link2Controller ? 'active' : '')}
-            %a{href: '/link2'} Link2
-=======
-          %li
+          %li{:class => (controller.class == RegistrationController && controller.action_name == 'new' ? 'active' : '')}
             =link_to "Register!", controller: "registration", action: "new"
-          %li
+          %li{:class => (controller.class == RegistrationController && controller.action_name == 'index' ? 'active' : '')}
             =link_to "Your Registrations", controller: "registration", action: "index"
->>>>>>> 4e676e2448bbf5fd6829e22f40cf7904f5b02bc1
             
         %ul.nav.navbar-nav.navbar-right
           %li
