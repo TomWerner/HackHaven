@@ -22,11 +22,11 @@
       
       #nav-collapse.collapse.navbar-collapse
         %ul.nav.navbar-nav
-          %li.active
+          %li{:class => (controller.class == AnnouncementsController ? 'active' : '')}
             %a{href: '/announcements'} Announcements
           
-          %li
-            %a{href: '#'} Link2
+          %li{:class => (controller.class == Link2Controller ? 'active' : '')}
+            %a{href: '/link2'} Link2
             
         %ul.nav.navbar-nav.navbar-right
           %li
