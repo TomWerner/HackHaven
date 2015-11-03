@@ -1,6 +1,15 @@
 Rails.application.routes.draw do
   resources :announcements
+<<<<<<< HEAD
   resources :link2
+=======
+  resources :registration
+  #root 'home#index'
+  resources :users
+  match '/login', to: 'sessions#new', via: :get
+  match '/login_create', to: 'sessions#create', via: :post  
+  match '/logout', to: 'sessions#destroy', via: :delete
+>>>>>>> 4e676e2448bbf5fd6829e22f40cf7904f5b02bc1
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

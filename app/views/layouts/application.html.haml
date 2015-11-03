@@ -6,6 +6,8 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'
     = stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css'
+    = stylesheet_link_tag 'application'
+    = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Poiret+One'
     = javascript_include_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'
     = csrf_meta_tags
   
@@ -24,13 +26,24 @@
         %ul.nav.navbar-nav
           %li{:class => (controller.class == AnnouncementsController ? 'active' : '')}
             %a{href: '/announcements'} Announcements
+<<<<<<< HEAD
           
           %li{:class => (controller.class == Link2Controller ? 'active' : '')}
             %a{href: '/link2'} Link2
+=======
+          %li
+            =link_to "Register!", controller: "registration", action: "new"
+          %li
+            =link_to "Your Registrations", controller: "registration", action: "index"
+>>>>>>> 4e676e2448bbf5fd6829e22f40cf7904f5b02bc1
             
         %ul.nav.navbar-nav.navbar-right
           %li
-            =link_to 'Right Item', '#'
+            -if !@current_user
+              = button_to 'Sign up/Login', login_path, :method => :get, :id => 'login'
+            -else   
+              You are logged in as #{@current_user.name}
+              = button_to 'Logout', logout_path, :method => :delete, :id => 'logout'
             
   %body
     #main.container
