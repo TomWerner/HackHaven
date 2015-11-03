@@ -14,6 +14,11 @@ end
 
 When /^I have added a registration with contest name "(.*?)"$/ do |contest|
     visit new_registration_path
+    fill_in 'registration_firstname', :with => 'Test'
+    fill_in 'registration_lastname', :with => 'Test'
+    fill_in 'registration_email', :with => 'Test@email.com'
+    fill_in 'registration_year', :with => 'Freshman'
+    fill_in 'registration_major', :with => 'Basket Weaving'
     select contest, :from => 'registration_contestname'
     click_button 'Submit'
 end
@@ -27,4 +32,10 @@ Then /^I should see a registration list entry with contest name "(.*?)"$/ do |co
         end
     end
     expect(result).to be_truthy
+end
+
+When /^I have edited a registration with contest name "(.*?)" to have contest name "(.*?)"$/ do |contest1, contest2|
+    click_on 'Edit'
+    select contest2, :from => 'registration_contestname'
+    click_button 'Submit'
 end

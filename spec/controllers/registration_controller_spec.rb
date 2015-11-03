@@ -39,14 +39,14 @@ describe RegistrationController, type: :controller do
     end
     describe 'update' do
         it 'should update firstname attribute' do
-            @fake_result = Registration.create!(:id => "3", :firstname => "Fake")
+            @fake_result = Registration.create!(:id => "3", :firstname => "Fake", :lastname => "fake", :email => "fake_email", :year => "fake", :major => "fake", :contestname => "contest1")
             expect(Registration).to receive(:find).with('3').and_return(@fake_result)
             parameters = {:id => '3', :registration => {:id => 3, :firstname => "new name"}}
             expect(@fake_result).to receive(:update_attributes!).with({:firstname => "new name"})
             post :update, parameters
         end
         it 'should redirect to index' do
-            @fake_result = Registration.create!(:id => "3", :firstname => "Fake")
+            @fake_result = Registration.create!(:id => "3", :firstname => "Fake", :lastname => "fake", :email => "fake_email", :year => "fake", :major => "fake", :contestname => "contest1")
             allow(Registration).to receive(:find).with('3').and_return(@fake_result)
             parameters = {:id => '3', :registration => {:id => 3, :firstname => "new name"}}
             allow(@fake_result).to receive(:update_attributes!).with({:firstname => "new name"})
@@ -56,9 +56,9 @@ describe RegistrationController, type: :controller do
     end
     describe 'create' do
         it 'should call model method to create new reg and redirect to index' do
-            @fake_result = Registration.create!(:id => "3", :firstname => "Fake")
-            parameters = {:id => '3', :registration => {:id => 3, :firstname => "new name"}}
-            expect(Registration).to receive(:create!).and_return(@fake_result)
+            @fake_result = Registration.create!(:id => "3", :firstname => "Fake", :lastname => "fake", :email => "fake_email", :year => "fake", :major => "fake", :contestname => "contest1")
+            parameters = {:id => '3', :registration => {:id => 3, :firstname => "new name", :lastname => "fake", :email => "fake_email", :year => "fake", :major => "fake", :contestname => "contest1"}}
+            expect(Registration).to receive(:new).and_return(@fake_result)
             post :create, parameters
             expect(response).to redirect_to('/registration')
         end
