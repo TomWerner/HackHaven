@@ -1,5 +1,4 @@
 class RegistrationController < ApplicationController
-  before_filter :set_current_user
     
   def registration_params
     params.require(:registration).permit(:userid, :contestname, :email, :firstname, :lastname, :email, :year, :major)
