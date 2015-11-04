@@ -1,0 +1,13 @@
+%h2 Create Question (Please admins only)
+
+%div.central-form
+  = form_tag questions_path do
+
+    %div.form-group
+      = label :question, :title, 'Title'
+      = text_field :question, 'title', class: "form-control"
+    %div.form-group
+      = label :question, :description, 'Description'
+      = text_area :question, 'description', rows:"5", class: "form-control"
+
+    = submit_tag 'Create Question', class: "btn btn-primary"

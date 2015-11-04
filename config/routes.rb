@@ -1,9 +1,22 @@
 Rails.application.routes.draw do
   resources :announcements
+end
+
+Rails.application.routes.draw do
+  resources :announcements
+  resources :registration
+  #root 'home#index'
   resources :users
   match '/login', to: 'sessions#new', via: :get
   match '/login_create', to: 'sessions#create', via: :post  
   match '/logout', to: 'sessions#destroy', via: :delete
+
+  resources :questions do
+    resources :testcases
+    post '/submit' => 'questions#submit'
+  end
+  
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -59,4 +72,7 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  
+  # This has to go at the end
+  get '/', :controller => 'home', :action => :index
 end

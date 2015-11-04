@@ -1,0 +1,20 @@
+<h1>Your Registrations</h1>
+<% if @current_user == nil %>
+    <h3>Please log in to view your registrations!</h3>
+<%elsif @registrations.blank? %>
+    <%= link_to 'Register For A Contest!', controller: 'registration', action: 'new' %>
+<% else %>
+    <br>
+    <table class="table table-striped">
+      <tr>
+        <th>Your Contests</th>
+        <th>Options</th>
+      </tr>
+      <% @registrations.each do |registration| %>
+        <tr>
+          <td><%= registration.contestname %></td>
+          <td><%= link_to 'Edit', controller: 'registration', action: 'edit', id: registration.id %></td>
+        </tr>
+      <% end %>
+    </table>
+<% end %>

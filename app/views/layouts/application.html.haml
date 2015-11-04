@@ -6,6 +6,8 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'
     = stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css'
+    = stylesheet_link_tag 'application'
+    = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Poiret+One'
     = javascript_include_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'
     = csrf_meta_tags
   
@@ -18,15 +20,18 @@
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
-        =link_to 'HackHaven', '#', class:"navbar-brand"
+        =link_to 'HackHaven', '/', class:"navbar-brand"
       
       #nav-collapse.collapse.navbar-collapse
         %ul.nav.navbar-nav
-          %li.active
-            %a{href: '#'} Link
-          
-          %li
-            %a{href: '#'} Link2
+          %li{:class => (controller.class == AnnouncementsController ? 'active' : '')}
+            %a{href: '/announcements'} Announcements
+          %li{:class => (controller.class == RegistrationController && controller.action_name == 'new' ? 'active' : '')}
+            =link_to "Register!", controller: "registration", action: "new"
+          %li{:class => (controller.class == RegistrationController && controller.action_name == 'index' ? 'active' : '')}
+            =link_to "Your Registrations", controller: "registration", action: "index"
+          %li{:class => (controller.class == QuestionsController ? 'active' : '')}
+            %a{href: '/questions'} Questions
             
         %ul.nav.navbar-nav.navbar-right
           %li

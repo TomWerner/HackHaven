@@ -1,0 +1,13 @@
+%h1 Questions 
+
+- @questions.each do |question|
+    %div.panel.panel-default
+        %div.panel-heading
+            =question.title
+        %div.panel-body 
+            %pre.blank-pre
+                = question.description
+            %div.pull-right
+                =link_to "Solve", question_path(question), class: 'btn btn-primary'
+
+

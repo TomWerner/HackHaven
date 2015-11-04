@@ -1,0 +1,10 @@
+%h1 Questions 
+
+- @results.each_with_index do |result, index|
+    %div.panel.panel-default
+        %div.panel-heading Test Case #{index}
+        %div.panel-body 
+            %pre.blank-pre
+                = result
+
+
