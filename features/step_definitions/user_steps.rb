@@ -1,7 +1,3 @@
-Given /^I am on the Announcements page$/ do
-  visit announcements_path
-end
-
 And /^I click on the button that says "(.*?)"$/ do |title|
     click_button(title)
 end
