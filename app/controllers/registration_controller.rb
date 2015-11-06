@@ -32,8 +32,13 @@ class RegistrationController < ApplicationController
   end
 
   def create
-    @registration = Registration.create!(registration_params)
-    flash[:notice] = "Registration for #{@registration.firstname} was successfully created."
-    redirect_to :action => "index"
+    if (@registration = Registration.new(registration_params)).valid?
+      @registration.save!
+      flash[:notice] = "Registration for #{@registration.firstname} was successfully created."
+      redirect_to :action => "index"
+    else
+      flash[:warning] = "Registration was not created. Please fix errors #{@registration.errors.full_messages}"
+      redirect_to :action => "new"
+    end
   end
 end
