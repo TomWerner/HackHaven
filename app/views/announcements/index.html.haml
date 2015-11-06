@@ -10,7 +10,7 @@
             %pre.blank-pre
                 = text_area :announcement, 'content' , rows:"5", class: "content", value: announcement.content, style: "display: none"
                 = text_area :announcement, 'content' , rows:"5", class: "id", value: announcement.id, style: "display: none"
-                %div{ :id => announcement.id }
+                %div{ :id => announcement.id, :class => "message"}
             %div.pull-right
                 =link_to "<< Edit >>", edit_announcement_path(announcement)
                 
