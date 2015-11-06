@@ -20,7 +20,7 @@
  Then /^I should see a question with title "(.*?)" and description "(.*?)"$/ do |title, description|
     result=false
     all(".panel").each do |panel|
-        if panel.has_content?(title) && panel.has_content?(description)
+        if panel.has_content?(title) && panel.all('p', :text => description)
             result = true
             break
         end

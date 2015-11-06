@@ -10,7 +10,7 @@
       = label :question, :description, 'Description'
       = text_area :question, 'description', rows:"10", class: "form-control"
 
-    = submit_tag 'Update Question', class: "btn btn-primary"
+    = submit_tag 'Update Question', class: "btn btn-primary", id: "submit"
 
 %div.padded-top
   %h2 Test cases
@@ -35,3 +35,21 @@
   
   %div.central-form
     = link_to 'Add Testcase', new_question_testcase_path(@question), class: 'btn btn-primary'
+    
+    
+:javascript
+    $(document).ready( function() {
+      $("#question_description").markdown({
+        onChange: function(e) {
+          var preview = e.$isPreview;
+          if(preview)
+          {
+            $("#submit").hide();
+          }
+          else
+          {
+            $("#submit").show();
+          }
+        }
+      })
+    });
