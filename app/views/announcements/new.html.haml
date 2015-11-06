@@ -8,6 +8,24 @@
       = text_field :announcement, 'title', class: "form-control"
     %div.form-group
       = label :announcement, :content, 'Content'
-      = text_area :announcement, 'content', rows:"5", class: "form-control"
+      = text_area :announcement, 'content', rows:"10", class: "form-control"
 
-    = submit_tag 'Create Announcement', class: "btn btn-primary"
+    = submit_tag 'Create Announcement', class: "btn btn-primary", id: "submit"
+    
+:javascript
+    $(document).ready( function() {
+      $("#announcement_content").markdown({
+        onChange: function(e) {
+          var preview = e.$isPreview;
+          if(preview)
+          {
+            $("#submit").hide();
+          }
+          else
+          {
+            $("#submit").show();
+          }
+        }
+      })
+    });
+     

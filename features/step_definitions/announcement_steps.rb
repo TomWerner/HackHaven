@@ -25,7 +25,7 @@
  Then /^I should see an announcement with title "(.*?)" and content "(.*?)"$/ do |title, content|
     result=false
     all(".panel").each do |panel|
-        if panel.has_content?(title) && panel.has_content?(content)
+        if panel.has_content?(title) && panel.all('p', :text => content)
             result = true
             break
         end

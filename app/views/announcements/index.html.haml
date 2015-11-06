@@ -1,5 +1,4 @@
 %h1 Announcements
-
 - @announcements.each do |announcement|
     %div.panel.panel-default
         %div.panel-heading
@@ -7,11 +6,25 @@
                 =announcement.title
             %div.text-right
                 =announcement.created_at.strftime("%B %d, %Y")
-        %div.panel-body 
+        %div.panel-body
             %pre.blank-pre
-                = announcement.content
+                = text_area :announcement, 'content' , rows:"5", class: "content", value: announcement.content, style: "display: none"
+                = text_area :announcement, 'content' , rows:"5", class: "id", value: announcement.id, style: "display: none"
+                %div{ :id => announcement.id, :class => "message"}
             %div.pull-right
                 =link_to "<< Edit >>", edit_announcement_path(announcement)
                 = link_to '<< Del >>', announcement_path(announcement), :method => :delete, :confirm => "Are you sure? Please don\'t do this if you aren't an admin..."
-
+                
+:javascript
+    $(document).ready( function() {
+    var content = $(".content");
+    var id = $(".id");
+    var i = 0;
+    
+    for (i = 0; i < content.length; i++) { 
+        var el = document.getElementById(id[i].value);
+        el.innerHTML = markdown.toHTML(content[i].value);
+     }
+    } ); 
+>>>>>>> AnnouncementMarkup
 
