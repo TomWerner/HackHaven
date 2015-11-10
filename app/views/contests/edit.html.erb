@@ -1,0 +1,26 @@
+<h1>Contest Creation (please admins only)</h1>
+<br>
+<div class="panel panel-default">
+        <div class="panel panel-heading">
+            To register, fill out this form (yes, it's that easy!)
+        </div>
+    <div class="panel panel-body">
+    <%= form_for :contest, url: {action: "update", id: @contest.id}, html: {method: "put"}, :class => "form-inline" do |f| %>
+       <p>
+            <%= f.label :contestname, 'Name of Contest' %><br>
+            <%= f.text_field :contestname, :class => "form-control" %>
+        </p>
+        
+        <p>
+            <%= f.label :contestdate, 'Date' %><br>
+            <%= f.date_select :contestdate, :class => "form-control" %>
+        </p>
+        
+        <p>
+            <%= f.submit 'Submit', :class => "btn btn-primary" %>
+        </p>
+        
+        <% end %>
+    </div>
+</div>
+

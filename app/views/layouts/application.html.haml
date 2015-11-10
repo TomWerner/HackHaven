@@ -33,6 +33,9 @@
             =link_to "Your Registrations", controller: "registration", action: "index"
           %li{:class => (controller.class == QuestionsController ? 'active' : '')}
             %a{href: '/questions'} Questions
+          %li{:class => (controller.class == ContestsController && controller.action_name == 'index' ? 'active' : '')}
+            =link_to "Upcoming Contests", controller: "contests", action: "index"
+            
             
         %ul.nav.navbar-nav.navbar-right
           %li

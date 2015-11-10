@@ -33,7 +33,7 @@
              
             <p>
                 <%= f.label :contestname, 'Contest Name' %><br>
-                <%= f.select :contestname, [['Contest 1 -- November 3rd','contest1'],['Contest 2 -- November 5th','contest2'],['Contest 3 -- November 7th','contest3']], :class => "btn btn-default dropdown-toggle" %>
+                <%= f.select :contestname, Contest.all.collect {|c| [ c.contestname, c.contestname ] }, {prompt: 'Select Contest'}, :class => "btn btn-default dropdown-toggle" %>
             </p>
             
             <%= f.hidden_field(:userid, value: @registration.userid) %>

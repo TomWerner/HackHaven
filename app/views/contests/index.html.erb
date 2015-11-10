@@ -1,0 +1,21 @@
+<h1>All Contests</h1>
+    <br>
+      <% if @contests == nil %>
+        <h3>No Contests</h3>
+      <% else %>
+        <table class="table table-striped">
+        <tr>
+          <th>Contest Name</th>
+          <th>Contest Date</th>
+          <th>Options (please admins only)</th>
+        </tr>
+        <% @contests.each do |contest| %>
+          <tr>
+            <td><%= contest.contestname %></td>
+            <td><%= contest.contestdate %></td>
+            <td><%= link_to 'Edit', controller: 'contests', action: 'edit', id: contest.id %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+

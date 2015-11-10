@@ -8,6 +8,12 @@ Given /a user has been logged in/ do
     click_button 'Create my account'
 end
 
+Given /a contest has been created with name "(.*?)"$/ do |contestname|
+    visit new_contest_path
+    fill_in 'contest_contestname', :with => contestname
+    click_button 'Submit'
+end
+
 Given /^I am on the Your Registrations page$/ do
     visit registration_index_path
 end

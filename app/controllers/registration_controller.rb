@@ -22,6 +22,12 @@ class RegistrationController < ApplicationController
     else
      @currentuserid = nil
     end
+    
+    if Contest.all.blank?
+      @contests_blank = true
+    else
+      @contests_blank = false
+    end
   end
   
   def update
@@ -38,7 +44,7 @@ class RegistrationController < ApplicationController
       redirect_to :action => "index"
     else
       flash[:warning] = "Registration was not created. Please fix errors #{@registration.errors.full_messages}"
-      redirect_to :action => "new"
+      render :action => "new"
     end
   end
 end
