@@ -1,20 +1,6 @@
 = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js'
 :javascript
     $(document).ready( function() {
-        var content = $("#question_description")[0];
-        content.innerHTML = markdown.toHTML(content.innerHTML);
-    
-        var languageSelect = $('#submission_language');
-        languageSelect.addClass("form-control");
-        
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.getSession().setMode("ace/mode/javascript");
-        editor.setOptions({maxLines: 40});
-        editor.insert(Array(40).join("\n"));
-        editor.setShowPrintMargin(false);
-        editor.gotoLine(0);
-        
         var editorModes = {
             10: 'ace/mode/csharp',
             7: 'ace/mode/c_cpp',
@@ -32,8 +18,30 @@
             13: 'ace/mode/mysql',
             14: 'ace/mode/perl'
         };
+        var content = $("#question_description")[0];
+        content.innerHTML = markdown.toHTML(content.innerHTML);
+    
+        var languageSelect = $('#submission_language');
+        languageSelect.addClass("form-control");
+        
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode(editorModes[parseInt(languageSelect.val(), 10)]);
+        editor.setOptions({maxLines: 40});
+        if (editor.session.getLength() <= 1) {
+            editor.insert(Array(40).join("\n"));
+        }
+        editor.setShowPrintMargin(false);
+        editor.gotoLine(0);
+        
+        
         languageSelect.on('change', function() {
             editor.getSession().setMode(editorModes[parseInt(this.value, 10)]);
+        });
+        
+        $('#submit').on('click', function() {
+            $('#editor-form-submit').val(editor.getValue());
+            console.log(editor.getValue());
         });
     });
 
@@ -52,7 +60,10 @@
         = label :submission, :code, "Code"
         = text_area :submission, 'code', id: "editor"
         
-    = submit_tag "Submit code", class: "btn btn-primary"
+    %div.padded-input
+        = text_area :submission, 'code', id: "editor-form-submit", style: "display: none;"
+        
+    = submit_tag "Submit code", class: "btn btn-primary", id: "submit"
     
 
 
