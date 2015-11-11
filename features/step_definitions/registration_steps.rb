@@ -1,6 +1,6 @@
 Given /a user has been logged in/ do
     visit announcements_path
-    click_button 'Sign up/Login'
+    click_link 'Sign up/Login'
     click_link 'Sign up for an account'
     fill_in 'signup_email', :with => 'Test@email.com'
     fill_in 'signup_name', :with => 'Test User'

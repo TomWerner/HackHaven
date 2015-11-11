@@ -1,6 +1,45 @@
+= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js'
+:javascript
+    $(document).ready( function() {
+        var content = $("#question_description")[0];
+        content.innerHTML = markdown.toHTML(content.innerHTML);
+    
+        var languageSelect = $('#submission_language');
+        languageSelect.addClass("form-control");
+        
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode("ace/mode/javascript");
+        editor.setOptions({maxLines: 40});
+        editor.insert(Array(40).join("\n"));
+        editor.setShowPrintMargin(false);
+        editor.gotoLine(0);
+        
+        var editorModes = {
+            10: 'ace/mode/csharp',
+            7: 'ace/mode/c_cpp',
+            2: 'ace/mode/clojure',
+            8: 'ace/mode/java',
+            6: 'ace/mode/golang',
+            4: 'ace/mode/javascript',
+            3: 'ace/mode/php',
+            0: 'ace/mode/python',
+            1: 'ace/mode/ruby',
+            5: 'ace/mode/scala',
+            9: 'ace/mode/vbscript',
+            11: 'ace/mode/batchfile',
+            12: 'ace/mode/objectivec',
+            13: 'ace/mode/mysql',
+            14: 'ace/mode/perl'
+        };
+        languageSelect.on('change', function() {
+            editor.getSession().setMode(editorModes[parseInt(this.value, 10)]);
+        });
+    });
+
 %h2 #{@question.title}
 
-%pre.blank-pre
+%div#question_description
     = @question.description
     
 = form_tag question_submit_path(@question), :method => :post, class: "form-group" do
@@ -8,8 +47,12 @@
         = label :submission, :language, 'Language'
         %div
             = select :submission, :language, options_for_select(@languages), class: "form-control"
+                
     %div.padded-input
         = label :submission, :code, "Code"
-        = text_area :submission, 'code', rows:"10", class: "form-control"
+        = text_area :submission, 'code', id: "editor"
         
     = submit_tag "Submit code", class: "btn btn-primary"
+    
+
+
