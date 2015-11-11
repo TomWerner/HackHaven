@@ -31,10 +31,21 @@
             </p>
             
              
+            <%= f.hidden_field(:contestname, value: @contestname) %>
+          
+            
             <p>
-                <%= f.label :contestname, 'Contest Name' %><br>
-                <%= f.select :contestname, Contest.all.collect {|c| [ c.contestname, c.contestname ] }, {prompt: 'Select Contest'}, :class => "btn btn-default dropdown-toggle" %>
+                <%= f.label :team, 'Team' %><br>
+                <%= f.radio_button :team, "None", :checked => true %> None<br>
+                <% f.hidden_field(:newteam, value: "Nope") %>
+                <% if @teams == [] %>
+                    <%= f.hidden_field(:selectedteam, value: "Empty") %>
+                <% else %>
+                <%= f.radio_button :team, "Selected" %> Join Team: <%= f.collection_select(:selectedteam, @teams, :name, :name) %>
+                <% end %>
             </p>
+            
+            
             
             <%= f.hidden_field(:userid, value: @registration.userid) %>
             <p>
