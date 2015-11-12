@@ -45,7 +45,7 @@
                     <%= f.radio_button :team, "Selected" %> Join Team: <%= f.collection_select(:selectedteam, @teams, :name, :name) %>
                     <% end %>
                 <% else %>
-                    <%= f.hidden_field(:newteam, value: "Nope") %>
+                    <%= f.hidden_field(:newteam, value: "") %>
                     <%= f.hidden_field(:selectedteam, value: "Nope") %>
                     <%= f.hidden_field(:team, value: @registration.team) %>
                     Cannot switch teams because you are the team captain. Please delete your team or assign a new team captain to switch.
