@@ -2,7 +2,9 @@
 <% if @current_user == nil %>
     <h3>Please log in to view your registrations!</h3>
 <%elsif @registrations.blank? %>
-    <%= link_to 'Register For A Contest!', controller: 'registration', action: 'new' %>
+    <%= link_to 'Register For A Contest!', controller: 'contests', action: 'index' %>
+<%elsif @contests == nil %>
+    <h3> No Contests To Register For </h3>
 <% else %>
     <br>
     <table class="table table-striped">
@@ -17,4 +19,35 @@
         </tr>
       <% end %>
     </table>
+   <h1>Your Teams</h1>
+    <table class="table table-striped">
+      <tr>
+        <th>Contest</th>
+        <th>Team</th>
+        <th>Team Captain</th>
+      </tr>
+      <% @registrations.each do |registration| %>
+        <tr>
+          <td><%= registration.contestname %></td>
+          <td><%= registration.team %></td>
+          <td><%if Team.where(:captain => @current_user.id, :name => registration.team) != [] %>Yes<%else%>No<%end%></td>
+        </tr>
+      <% end %>
+    </table>
+    <% if @m_contests != [] %>
+     <h1>Upcoming Contests</h1>
+     <table class="table table-striped">
+      <tr>
+        <th>Register for a Contest</th>
+        <th>Link</th>
+      </tr>
+      <% @m_contests.each do |contest| %>
+        <tr>
+          <td><%= contest.contestname %></td>
+          <td><%= link_to 'Register!', controller: 'registration', action: 'new', id: contest.id %></td>
+        </tr>
+      <% end %>
+    </table>
+    <% end %>
+   
 <% end %>

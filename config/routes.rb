@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :registration
   #root 'home#index'
   get 'registration/new/:id' => 'registration#new'
-  get 'registration/create_team' => 'registration#create_team'
+
   resources :users
   resources :contests
   match '/login', to: 'sessions#new', via: :get

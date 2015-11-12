@@ -14,7 +14,9 @@ class Registration < ActiveRecord::Base
         if @regs != nil
             @regs.each do |reg|
                 if reg.contestname == contestname
-                    errors.add(:userid, "Already Registered For Selected Contest")
+                    if reg.id != id
+                        errors.add(:userid, "Already Registered For Selected Contest")
+                    end
                 end
             end
         end

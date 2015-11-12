@@ -3,14 +3,22 @@ class RegistrationController < ApplicationController
   def registration_params
     params.require(:registration).permit(:userid, :contestname, :email, :firstname, :lastname, :email, :year, :major, :selectedteam, :team, :newteam)
   end
-  
-  def full_reg_params
-    params.require(:registration).permit(:userid, :contestname, :email, :firstname, :lastname, :email, :year, :major, :team)
-  end
 
   def index
     if @current_user != nil
      @registrations = Registration.order(:created_at => :desc).where(:userid => @current_user.id)
+     
+     if Contest.all.blank?
+        @contests = nil
+     else
+        @contests = Contest.all
+        @m_contests = []
+        @contests.each do |c|
+          if Registration.where(:userid => @current_user.id, :contestname => c.contestname) == []
+            @m_contests.push(c)
+          end
+        end
+      end
     else
       @registrations = nil
     end
@@ -27,15 +35,8 @@ class RegistrationController < ApplicationController
      @currentuserid = nil
     end
     
-    if Contest.all.blank?
-      @contests_blank = true
-    else
-      @contests_blank = false
-    end
-    
-    #@teams = [];
-    #@teams.push Contest.new :contestname => "Team 1"
-    #@teams.push Contest.new :contestname => "Team 2"
+    @contests_blank = Contest.all.blank?
+
     @teams = Team.where(:contestname => @contestname)
   end
 
@@ -48,24 +49,16 @@ class RegistrationController < ApplicationController
      @currentuserid = nil
     end
     
-    if Contest.all.blank?
-      @contests_blank = true
-    else
-      @contests_blank = false
-    end
-    
-    #@teams = [];
-    #@teams.push Contest.new :contestname => "Team 1"
-    #@teams.push Contest.new :contestname => "Team 2"
+    @contests_blank = Contest.all.blank?
+
     @teams = Team.where(:contestname => @contestname)
 
   end
-  
-  # FIX THIS BUG:
+
   def update
     @registration = Registration.find params[:id]
     
-     @reg = registration_params.to_h
+    @reg = registration_params.to_h
     @registrar = registration_params.to_h
     if @reg["team"] == "Selected"
       @registrar["team"] = @reg["selectedteam"]
@@ -73,12 +66,11 @@ class RegistrationController < ApplicationController
       @registrar["team"] = @reg["newteam"]
     end
     
-    @registration.update_attributes!(registration_params)
+    @registration.update_attributes!(@registrar)
     flash[:notice] = "Registration for #{@registration.firstname} was successfully updated."
     redirect_to :action => "index"
   end
 
-  # DISPLAY TEAMS OF USER
   def create
     @reg = registration_params.to_h
     @registrar = registration_params.to_h
@@ -90,9 +82,9 @@ class RegistrationController < ApplicationController
 
     if (@registration = Registration.new(@registrar)).valid?
       @registration.save!
-      
+      #Note to self: look into that one lecture and make this that cool relationally db way
       if @reg["team"] == "Create Own Team"
-        if(@newteam = Team.new(:captain => @registrar[:userid], :name => @reg["newteam"], :contestname => @reg["contestname"])).valid?
+        if(@newteam = Team.new(:captain => @registrar["userid"], :name => @reg["newteam"], :contestname => @reg["contestname"])).valid?
           @newteam.save!
           flash[:notice] = "You are now the captain of #{@newteam.name}."
         end
@@ -116,9 +108,6 @@ class RegistrationController < ApplicationController
       
       flash[:warning] = "Registration was not created. Please fix errors #{@registration.errors.full_messages}"
       @contestname = @contest.contestname
-      #@teams = [];
-      #@teams.push Contest.new :contestname => "Team 1"
-      #@teams.push Contest.new :contestname => "Team 2"
       
       @teams = Team.where(:contestname => @contestname)
       

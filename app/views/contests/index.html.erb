@@ -12,7 +12,7 @@
         <% @contests.each do |contest| %>
           <tr>
             <td><%= contest.contestname %></td>
-            <td><%= contest.contestdate %></td>
+            <td><%= contest.contestdate.strftime("%m/%d/%Y") %></td>
             <td><%= link_to 'Register!', controller: 'registration', action: 'new', id: contest.id %></td>
           </tr>
         <% end %>
