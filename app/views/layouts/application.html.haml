@@ -33,6 +33,8 @@
             %a{href: '/questions'} Questions
           %li{:class => (controller.class == ContestsController && controller.action_name == 'index' ? 'active' : '')}
             =link_to "Upcoming Contests", controller: "contests", action: "index"
+          %li{:class => (controller.class == TeamsController && controller.action_name == 'index' ? 'active' : '')}
+            =link_to "Teams", controller: "teams", action: "index"
             
             
         %ul.nav.navbar-nav.navbar-right

@@ -30,6 +30,13 @@ class ContestsController < ApplicationController
         redirect_to :action => "index"
     end
     
+    def destroy
+        @contest = Contest.find params[:id]
+        @contest.destroy
+        flash[:notice] = "#{@contest.contestname} was successfully destroyed!"
+        redirect_to :action => "index"
+    end
+    
     def create
         param_hash = {}
         param_hash["contestname"] = params[:contest]["contestname"]

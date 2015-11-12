@@ -24,13 +24,19 @@
       <tr>
         <th>Contest</th>
         <th>Team</th>
-        <th>Team Captain</th>
+        <th>Team Details</th>
       </tr>
       <% @registrations.each do |registration| %>
         <tr>
           <td><%= registration.contestname %></td>
           <td><%= registration.team %></td>
-          <td><%if Team.where(:captain => @current_user.id, :name => registration.team) != [] %>Yes<%else%>No<%end%></td>
+          <td><%if Team.where(:captain => @current_user.id, :name => registration.team) != [] %>
+          <%= link_to 'View Details', controller: 'teams', action: 'show', id: (Team.where(:name => registration.team, :captain => @current_user.id)).first.id %>
+          <%elsif registration.team != "None" %>
+          <%= link_to 'View Details', controller: 'teams', action: 'show', id: (Team.where(:name => registration.team, :contestname => registration.contestname)).first.id %>
+          <% else %>
+          None
+          <%end%></td>
         </tr>
       <% end %>
     </table>

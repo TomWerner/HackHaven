@@ -36,7 +36,11 @@ class RegistrationController < ApplicationController
     end
     
     @contests_blank = Contest.all.blank?
-
+    if (Team.where(:name => @registration.team, :contestname => @registration.contestname)).first != nil
+      @teamcaptain = (Team.where(:name => @registration.team, :contestname => @registration.contestname)).first.captain
+    else
+      @teamcaptain = nil
+    end
     @teams = Team.where(:contestname => @contestname)
   end
 
@@ -66,9 +70,45 @@ class RegistrationController < ApplicationController
       @registrar["team"] = @reg["newteam"]
     end
     
-    @registration.update_attributes!(@registrar)
-    flash[:notice] = "Registration for #{@registration.firstname} was successfully updated."
-    redirect_to :action => "index"
+    if @registration.update_attributes(@registrar)
+      @registration.save!
+      if @reg["team"] == "Create Own Team"
+          if(@newteam = Team.new(:captain => @registrar["userid"], :name => @reg["newteam"], :contestname => @reg["contestname"])).valid?
+            @newteam.save!
+            flash[:notice] = "You are now the captain of #{@newteam.name}."
+          end
+      end
+        
+      flash[:notice] = "Registration for #{@registration.firstname} was successfully updated."
+      redirect_to :action => "index"
+    else
+      @reg = registration_params
+      @contest = Contest.find_by_contestname @reg["contestname"]
+      
+      if @contest == nil
+        @contest = Contest.find params[:id]
+      end
+      
+      if @current_user != nil
+        @currentuserid = @current_user.id;
+      else
+        @currentuserid = nil
+      end
+      
+      flash[:warning] = "Registration was not updated. Please fix errors #{@registration.errors.full_messages}"
+      @contestname = @contest.contestname
+      
+      @teams = Team.where(:contestname => @contestname)
+      
+      render :action => "edit", :id => @registration.id
+    end
+  end
+  
+  def destroy
+        @registration = Registration.find params[:id]
+        @registration.destroy
+        flash[:notice] = "Registration for #{@registration.firstname} was successfully destroyed!"
+        redirect_to :action => "index"
   end
 
   def create
