@@ -22,12 +22,15 @@
         content.innerHTML = markdown.toHTML(content.innerHTML);
     
         var languageSelect = $('#submission_language');
+        languageSelect.val("#{@last_submission_language}");
         languageSelect.addClass("form-control");
         
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode(editorModes[parseInt(languageSelect.val(), 10)]);
         editor.setOptions({maxLines: 40});
+        editor.setValue("#{j @last_submission}");
+        
         if (editor.session.getLength() <= 1) {
             editor.insert(Array(40).join("\n"));
         }
@@ -64,6 +67,3 @@
         = text_area :submission, 'code', id: "editor-form-submit", style: "display: none;"
         
     = submit_tag "Submit code", class: "btn btn-primary", id: "submit"
-    
-
-
