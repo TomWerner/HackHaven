@@ -46,3 +46,12 @@ When /^I have edited a registration with first name "(.*?)" to have first name "
     fill_in 'registration_firstname', :with => name2
     click_button 'Submit'
 end
+
+When /^I am on the Edit Registration page$/ do
+    visit registration_index_path
+    click_on 'Edit'
+end
+
+Then /^I should see a registration list entry with first name "(.*?)"$/ do |name|
+    expect(page).to have_selector("input#registration_firstname[value="+name+"]")
+end

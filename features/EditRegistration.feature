@@ -12,6 +12,6 @@ Scenario: Edit a registration
   And I am on the Your Registrations page
   Then I should see a registration list entry with contest name "Cool Contest"
   
-  When I have edited a registration with first name "Emily" to have first name "Not Emily"
-  And I am on the Your Registrations page
-  Then I should see a registration list entry with contest name "Cool Contest"
+  When I have edited a registration with first name "Emily" to have first name "Not"
+  And I am on the Edit Registration page
+  Then I should see a registration list entry with first name "Not"
