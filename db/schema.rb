@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151101175707) do
+ActiveRecord::Schema.define(version: 20151109214837) do
 
   create_table "announcements", force: :cascade do |t|
     t.string   "title"
@@ -50,11 +50,12 @@ ActiveRecord::Schema.define(version: 20151101175707) do
   add_index "testcases", ["question_id"], name: "index_testcases_on_question_id"
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.string "password_hash"
-    t.string "password_salt"
-    t.string "session_token"
+    t.string  "name"
+    t.string  "email"
+    t.string  "password_hash"
+    t.string  "password_salt"
+    t.string  "session_token"
+    t.integer "admin"
   end
 
 end

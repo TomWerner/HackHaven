@@ -10,17 +10,30 @@ class AnnouncementsController < ApplicationController
 
   def index
     @announcements = Announcement.order(:created_at => :desc)
+    @admin = 1
+    if @current_user != nil
+      @admin = @current_user.admin
+    end 
   end
 
   def edit
+     if(@current_user.admin == 1)
+      redirect_to announcements_path
+     end
     @announcement = Announcement.find params[:id]
   end
 
   def new
+     if(@current_user.admin == 1)
+      redirect_to announcements_path
+     end
     #just displays the new template
   end
   
   def update
+     if(@current_user.admin == 1)
+      redirect_to announcements_path
+     end
     @announcement = Announcement.find params[:id]
     @announcement.update_attributes!(announcement_params)
     flash[:notice] = "'#{@announcement.title}' was successfully updated."
@@ -28,12 +41,18 @@ class AnnouncementsController < ApplicationController
   end
 
   def create
+     if(@current_user.admin == 1)
+      redirect_to announcements_path
+     end
     @announcement = Announcement.create!(announcement_params)
     flash[:notice] = "'#{@announcement.title}' was successfully created."
     redirect_to announcements_path
   end
   
   def destroy
+    if(@current_user.admin == 1)
+      redirect_to announcements_path
+    end
     @announcement = Announcement.find(params[:id])
     @announcement.destroy
     flash[:notice] = "'#{@announcement.title}' was successfully deleted."

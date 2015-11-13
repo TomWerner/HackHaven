@@ -1,4 +1,6 @@
 %h1 Announcements
+-if( @admin == 0)
+    = link_to 'Add New Announcement', new_announcement_path, class: "admin"
 - @announcements.each do |announcement|
     %div.panel.panel-default
         %div.panel-heading
@@ -12,12 +14,14 @@
                 = text_area :announcement, 'content' , rows:"5", class: "id", value: announcement.id, style: "display: none"
                 %div{ :id => announcement.id, :class => "message"}
             %div.pull-right
-                =link_to "<< Edit >>", edit_announcement_path(announcement)
-                = link_to '<< Del >>', announcement_path(announcement), :method => :delete, :confirm => "Are you sure? Please don\'t do this if you aren't an admin..."
+                -if( @admin == 0)
+                    =link_to "<< Edit >>", edit_announcement_path(announcement), class: "admin"
+                    = link_to '<< Del >>', announcement_path(announcement), :method => :delete, :confirm => "Are you sure? Please don\'t do this if you aren't an admin...", class: "admin"
                 
 :javascript
     $(document).ready( function() {
     var content = $(".content");
+    var admin = $(".adminValue");
     var id = $(".id");
     var i = 0;
     
@@ -25,5 +29,14 @@
         var el = document.getElementById(id[i].value);
         el.innerHTML = markdown.toHTML(content[i].value);
      }
+     //admin is the value 0, if admin show options to edit announcments
+    //if(admin[0].value == 0 )
+    //{
+        //$(".admin").show();
+    //}
+     
     } ); 
+    
+   
+    
 
