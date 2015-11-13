@@ -5,7 +5,6 @@ Background: user has been added to HackHaven
   Given a user has been logged in
   Given a contest has been created with name "Cool Contest"
   Given a contest has been created with name "Cooler Contest"
-    
   
 Scenario: Edit a registration
   When I have added a registration with contest name "Cool Contest"
