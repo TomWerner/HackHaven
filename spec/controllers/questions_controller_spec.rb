@@ -159,5 +159,35 @@ RSpec.describe QuestionsController, type: :controller do
       post :submit, submission_params
       expect(response).to redirect_to(login_path)
     end
+    it "adds to the submission table with bad results" do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(
+        User.create!(name: "Tom", email: "Tom", password: "Password"))
+      submission_params = {question_id: 123, submission: {language: "0", code: "print('Hello')"}}
+      
+      fake_results = ["test1", "test2", "test3"]
+      expect(Compilebox).to receive(:submit_code).with("123", "0", "print('Hello')").and_return(fake_results)
+      
+      expect(Submission).to receive(:create!).with({
+        question_id: "123", user_id: 1, code: "print('Hello')", 
+        language: "0", correct: false
+      })
+      post :submit, submission_params
+    end
+    it "adds to the submission table with good results" do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(
+        User.create!(name: "Tom", email: "Tom", password: "Password"))
+      submission_params = {question_id: 123, submission: {language: "0", code: "print('Hello')"}}
+      
+      fake_results = ["Correct!", "Correct!", "Correct!"]
+      expect(Compilebox).to receive(:submit_code).with("123", "0", "print('Hello')").and_return(fake_results)
+      
+      expect(Submission).to receive(:create!).with({
+        question_id: "123", user_id: 1, code: "print('Hello')", 
+        language: "0", correct: true
+      })
+      post :submit, submission_params
+    end
   end
 end
