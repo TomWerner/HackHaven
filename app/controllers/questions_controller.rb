@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
   before_filter :restrict_to_logged_in_users
   
   def restrict_to_logged_in_users
-    if !@current_user
+    if @current_user == nil
       flash[:notice] = "You need to be logged in to see questions."
       redirect_to login_path
     end

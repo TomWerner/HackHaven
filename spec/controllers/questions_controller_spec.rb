@@ -4,9 +4,15 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
 
   describe "GET #index" do
-    it "returns http success" do
-      get :index
+    it "returns http success if logged in" do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
+      get :index, :session_token => "123"
       expect(response).to have_http_status(:success)
+    end
+    it "redirects to the login page if not logged in" do
+      get :index
+      expect(response).to redirect_to(login_path)
     end
     
     it "returns the questions" do
@@ -21,25 +27,65 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'GET #show' do
-    it 'assigns the @question variable' do
+    it 'assigns the @question variable if logged in' do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
       fake_result = double('question')
       expect(Question).to receive(:find).with('1').and_return(fake_result)
       get :show, id: 1
       expect(assigns(:question)).to eq(fake_result)
     end
+    it "redirects to the login page if not logged in" do
+      get :show, id: 1
+      expect(response).to redirect_to(login_path)
+    end
+    it "checks the latest submissions - none" do
+      session[:session_token] = 123
+      Question.create!(title: "title", description: "description")
+      expect(User).to receive(:find_by_session_token).and_return(
+        User.create!(name: "Tom", email: "Tom", password: "Password"))
+      empty_results = double('item')
+      expect(Submission).to receive(:where).with(user_id: 1, question_id: "1").and_return(empty_results)
+      expect(empty_results).to receive(:order).with(created_at: :desc).and_return([])
+      get :show, id: 1
+      expect(assigns(:last_submission)).to eq("")
+      expect(assigns(:last_submission_language)).to eq(0)
+      expect(response).to have_http_status(:success)
+    end
+    it "checks the latest submissions - multiple" do
+      session[:session_token] = 123
+      Question.create!(title: "title", description: "description")
+      expect(User).to receive(:find_by_session_token).and_return(
+        User.create!(name: "Tom", email: "Tom", password: "Password"))
+      Submission.create!(code: "first", language: 1, user_id: 1, question_id: "1")
+      Submission.create!(code: "second", language: 2, user_id: 1, question_id: "1")
+      get :show, id: 1
+      
+      expect(assigns(:last_submission)).to eq("second")
+      expect(assigns(:last_submission_language)).to eq(2)
+      expect(response).to have_http_status(:success)
+    end
   end
   
   describe 'GET #edit' do
-    it 'assigns the @question variable' do
+    it 'assigns the @question variable if logged in' do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
       fake_result = double('question')
       expect(Question).to receive(:find).with('1').and_return(fake_result)
       get :edit, id: 1
       expect(assigns(:question)).to eq(fake_result)
     end
+    it "redirects to the login page if not logged in" do
+      get :edit, id: 1
+      expect(response).to redirect_to(login_path)
+    end
   end
   
   describe '#update' do
-    it 'assigns updates @question variable' do
+    it 'assigns updates @question variable if logged in' do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
       update = {question: {title: "New title", description: "New content"}}
       question = Question.create(title: "Title", description: "Content")
       expect(Question).to receive(:find).with("1").and_return(question)
@@ -50,10 +96,17 @@ RSpec.describe QuestionsController, type: :controller do
       expect(flash[:notice]).to eq("'New title' was successfully updated.")
       expect(response).to redirect_to(questions_path)
     end
+    it "redirects to the login page if not logged in" do
+      update = {id: 1, question: {title: "New title", description: "New content"}}
+      post :update, update
+      expect(response).to redirect_to(login_path)
+    end
   end
   
   describe '#create' do
-    it 'creates the question' do
+    it 'creates the question if logged in' do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
       create_params = {question: {title: "Title", description: "Content"}}
       question = Question.create(title: "Title", description: "Content")
       expect(Question).to receive(:create!).with(create_params[:question]).and_return(question)
@@ -62,10 +115,17 @@ RSpec.describe QuestionsController, type: :controller do
       expect(flash[:notice]).to eq("'Title' was successfully created.")
       expect(response).to redirect_to(questions_path)
     end
+    it "redirects to the login page if not logged in" do
+      create_params = {question: {title: "Title", description: "Content"}}
+      post :create, create_params
+      expect(response).to redirect_to(login_path)
+    end
   end
   
   describe '#destroy' do
-    it 'destroys the question' do
+    it 'destroys the question if logged in' do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
       destroy_params = {id: 1, question: {title: "Title", description: "Content"}}
       question = Question.create(title: "Title", description: "Content")
       expect(Question).to receive(:find).with("1").and_return(question)
@@ -75,10 +135,17 @@ RSpec.describe QuestionsController, type: :controller do
       expect(flash[:notice]).to eq("'Title' was successfully deleted.")
       expect(response).to redirect_to(questions_path)
     end
+    it "redirects to the login page if not logged in" do
+      destroy_params = {id: 1, question: {title: "Title", description: "Content"}}
+      post :destroy, destroy_params
+      expect(response).to redirect_to(login_path)
+    end
   end
   
   describe 'POST #submit' do
-    it 'calls compilebox' do
+    it 'calls compilebox if logged in' do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
       submission_params = {question_id: 123, submission: {language: "0", code: "print('Hello')"}}
       fake_results = ["test1", "test2", "test3"]
       expect(Compilebox).to receive(:submit_code).with("123", "0", "print('Hello')").and_return(fake_results)
@@ -86,6 +153,11 @@ RSpec.describe QuestionsController, type: :controller do
       post :submit, submission_params
       
       expect(assigns(:results)).to eq(fake_results)
+    end
+    it "redirects to the login page if not logged in" do
+      submission_params = {question_id: 123, submission: {language: "0", code: "print('Hello')"}}
+      post :submit, submission_params
+      expect(response).to redirect_to(login_path)
     end
   end
 end
