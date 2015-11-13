@@ -1,0 +1,40 @@
+<h1><%= @team.name %> Information</h1>
+<br>
+<table class="table table-striped">
+  <tr>
+    <th>Team Member</th>
+    <th>Info</th>
+  </tr>
+  <% if @team.captain == @current_user.id %>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.name %></td>
+      <td>
+          <% if user.id != @team.captain %>
+              <%= link_to 'Remove From Team', controller: 'teams', action: 'remove', id: user.id %><br>
+              <%= link_to 'Make Captain', controller: 'teams', action: 'captainize', id: user.id, teamid: @team.id %>
+          <% else %>
+          Team Captain
+          <% end %>
+      </td>
+    </tr>
+    <%end%>
+    <tr><%= link_to 'Destroy Team', team_path(@team.id), :method => :delete %></tr>
+  <% else %>
+   <% @users.each do |user| %>
+    <tr>
+      <td><%= user.name %></td>
+      <td>
+          <% if user.id == @team.captain %>
+          Team Captain
+          <% elsif user.id == @current_user.id %>
+          <%= link_to 'Leave Team', controller: 'teams', action: 'remove', id: user.id %>
+          <% else %>
+          Team Member
+          <% end %>
+      </td>
+    </tr>
+    <% end %>
+  <% end %>
+</table>
+

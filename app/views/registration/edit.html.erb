@@ -31,10 +31,28 @@
             </p>
             
              
+            <%= f.hidden_field(:contestname, value: @contestname) %>
+          
+            
             <p>
-                <%= f.label :contestname, 'Contest Name' %><br>
-                <%= f.select :contestname, Contest.all.collect {|c| [ c.contestname, c.contestname ] }, {prompt: 'Select Contest'}, :class => "btn btn-default dropdown-toggle" %>
+                <% if @current_user.id != @teamcaptain %>
+                    <%= f.label :team, 'Team' %><br>
+                    <%= f.radio_button :team, "None", :checked => true %> None<br>
+                    <%= f.radio_button :team, "Create Own Team" %> Create Own Team, Enter Team Name: <%= f.text_field :newteam %><br>
+                    <% if @teams == [] %>
+                        <%= f.hidden_field(:selectedteam, value: "Empty") %>
+                    <% else %>
+                    <%= f.radio_button :team, "Selected" %> Join Team: <%= f.collection_select(:selectedteam, @teams, :name, :name) %>
+                    <% end %>
+                <% else %>
+                    <%= f.hidden_field(:newteam, value: "") %>
+                    <%= f.hidden_field(:selectedteam, value: "Nope") %>
+                    <%= f.hidden_field(:team, value: @registration.team) %>
+                    Cannot switch teams because you are the team captain. Please delete your team or assign a new team captain to switch.
+                <% end %>
             </p>
+            
+            
             
             <%= f.hidden_field(:userid, value: @registration.userid) %>
             <p>

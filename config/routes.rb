@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   resources :announcements
   resources :registration
   #root 'home#index'
+  get 'registration/new/:id' => 'registration#new'
+
   resources :users
   resources :contests
   match '/login', to: 'sessions#new', via: :get
@@ -16,6 +18,10 @@ Rails.application.routes.draw do
     resources :testcases
     post '/submit' => 'questions#submit'
   end
+  
+  resources :teams
+  get 'teams/remove/:id' => 'teams#remove'
+  get 'teams/captainize/:id' => 'teams#captainize'
   
   
   # The priority is based upon order of creation: first created -> highest priority.

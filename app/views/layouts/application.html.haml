@@ -26,14 +26,14 @@
         %ul.nav.navbar-nav
           %li{:class => (controller.class == AnnouncementsController ? 'active' : '')}
             %a{href: '/announcements'} Announcements
-          %li{:class => (controller.class == RegistrationController && controller.action_name == 'new' ? 'active' : '')}
-            =link_to "Register!", controller: "registration", action: "new"
           %li{:class => (controller.class == RegistrationController && controller.action_name == 'index' ? 'active' : '')}
             =link_to "Your Registrations", controller: "registration", action: "index"
           %li{:class => (controller.class == QuestionsController ? 'active' : '')}
             %a{href: '/questions'} Questions
           %li{:class => (controller.class == ContestsController && controller.action_name == 'index' ? 'active' : '')}
             =link_to "Upcoming Contests", controller: "contests", action: "index"
+          %li{:class => (controller.class == TeamsController && controller.action_name == 'index' ? 'active' : '')}
+            =link_to "Teams", controller: "teams", action: "index"
             
             
         %ul.nav.navbar-nav.navbar-right
