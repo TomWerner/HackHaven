@@ -1,54 +1,6 @@
 = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js'
-:javascript
-    $(document).ready( function() {
-        var editorModes = {
-            10: 'ace/mode/csharp',
-            7: 'ace/mode/c_cpp',
-            2: 'ace/mode/clojure',
-            8: 'ace/mode/java',
-            6: 'ace/mode/golang',
-            4: 'ace/mode/javascript',
-            3: 'ace/mode/php',
-            0: 'ace/mode/python',
-            1: 'ace/mode/ruby',
-            5: 'ace/mode/scala',
-            9: 'ace/mode/vbscript',
-            11: 'ace/mode/batchfile',
-            12: 'ace/mode/objectivec',
-            13: 'ace/mode/mysql',
-            14: 'ace/mode/perl'
-        };
-        var content = $("#question_description")[0];
-        content.innerHTML = markdown.toHTML(content.innerHTML);
-    
-        var languageSelect = $('#submission_language');
-        languageSelect.val("#{@last_submission_language}");
-        languageSelect.addClass("form-control");
-        
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.getSession().setMode(editorModes[parseInt(languageSelect.val(), 10)]);
-        editor.setOptions({maxLines: 40});
-        editor.setValue("#{j @last_submission}");
-        
-        if (editor.session.getLength() <= 1) {
-            editor.insert(Array(40).join("\n"));
-        }
-        editor.setShowPrintMargin(false);
-        editor.gotoLine(0);
-        
-        
-        languageSelect.on('change', function() {
-            editor.getSession().setMode(editorModes[parseInt(this.value, 10)]);
-        });
-        
-        $('#submit').on('click', function() {
-            $('#editor-form-submit').val(editor.getValue());
-            console.log(editor.getValue());
-        });
-    });
 
-%h2 #{@question.title}
+%h2.question-show-class #{@question.title}
 
 %div#question_description
     = @question.description
@@ -65,5 +17,19 @@
         
     %div.padded-input
         = text_area :submission, 'code', id: "editor-form-submit", style: "display: none;"
-        
-    = submit_tag "Submit code", class: "btn btn-primary", id: "submit"
+    
+    %div.row
+        %div.col-sm-6
+            %div.input-group
+                %label
+                    %input{id: 'toggleCustomTestCases', type: "checkbox", style: "margin: 7px;"} 
+                    Test against custom input
+            = text_area '', '', id: "customInputArea", rows: 5
+        %div.col-sm-6
+            = submit_tag "Submit code", class: "btn btn-success pull-right", id: "submit"
+            %button{type: "button", class: "btn btn-default pull-right", id: "customInputBtn", style: "margin-right: 7px;"} Run Custom Testcase
+    
+    
+= javascript_include_tag 'questions_show'
+:javascript
+    $(question_show.setup)
