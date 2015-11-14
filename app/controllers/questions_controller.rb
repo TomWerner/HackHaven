@@ -21,6 +21,15 @@ class QuestionsController < ApplicationController
       correct: ((@results.select {|x| x =~ /^Correct!$/}) == @results)
     })
   end
+  
+  def submit_custom_testcase
+    language = params[:submission][:language]
+    code = params[:submission][:code]
+    stdin = params[:submission][:stdin]
+    
+    Compilebox.get_output(language, code, stdin)
+    render :json => Compilebox.response
+  end
 
   def index
     @questions = Question.all
