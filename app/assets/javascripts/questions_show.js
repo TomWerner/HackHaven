@@ -79,6 +79,7 @@ var question_show = {
                          code: editor.getValue(),
                          stdin: customTestcaseInput.val()
                      },
+                     question_id: 0,
               },
               success: question_show.display_custom_testcase_results
             });

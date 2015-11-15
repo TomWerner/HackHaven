@@ -190,4 +190,24 @@ RSpec.describe QuestionsController, type: :controller do
       post :submit, submission_params
     end
   end
+  
+  describe 'POST #submit_custom_testcase' do
+    it 'calls compilebox if logged in' do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
+      submission_params = {question_id: 0, submission: {stdin: "input", language: "0", code: "print('Hello')"}}
+      fake_results = ["test1", "test2", "test3"]
+      expect(Compilebox).to receive(:get_output).with("0", "print('Hello')", "input").and_return(fake_results)
+      
+      post :submit_custom_testcase, submission_params
+      
+      
+      expect(response.body).to eq(Compilebox.response.to_json)
+    end
+    it "redirects to the login page if not logged in" do
+      submission_params = {question_id: 123, submission: {language: "0", code: "print('Hello')"}}
+      post :submit_custom_testcase, submission_params
+      expect(response).to redirect_to(login_path)
+    end
+  end
 end
