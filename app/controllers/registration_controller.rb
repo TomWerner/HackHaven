@@ -5,23 +5,16 @@ class RegistrationController < ApplicationController
   end
 
   def index
-    if @current_user != nil
-     @registrations = Registration.order(:created_at => :desc).where(:userid => @current_user.id)
-     
-     if Contest.all.blank?
-        @contests = nil
-     else
+     @current_user == nil || @registrations = Registration.order(:created_at => :desc).where(:userid => @current_user.id) 
+
         @contests = Contest.all
+        
         @m_contests = []
         @contests.each do |c|
-          if Registration.where(:userid => @current_user.id, :contestname => c.contestname) == []
-            @m_contests.push(c)
-          end
+           @current_user == nil || if Registration.where(:userid => @current_user.id, :contestname => c.contestname) == []
+              @m_contests.push(c)
+            end
         end
-      end
-    else
-      @registrations = nil
-    end
   end
 
   def edit
@@ -29,11 +22,8 @@ class RegistrationController < ApplicationController
     
     @contest = Contest.find_by_contestname @registration.contestname
     @contestname = @contest.contestname
-    if @current_user != nil
-     @currentuserid = @current_user.id;
-    else
-     @currentuserid = nil
-    end
+  
+    @current_user == nil || @currentuserid = @current_user.id
     
     @contests_blank = Contest.all.blank?
     if (Team.where(:name => @registration.team, :contestname => @registration.contestname)).first != nil
@@ -47,12 +37,8 @@ class RegistrationController < ApplicationController
   def new
     @contest = Contest.find params[:id]
     @contestname = @contest.contestname
-    if @current_user != nil
-     @currentuserid = @current_user.id;
-    else
-     @currentuserid = nil
-    end
-    
+    @current_user == nil || @currentuserid = @current_user.id;
+
     @contests_blank = Contest.all.blank?
 
     @teams = Team.where(:contestname => @contestname)
@@ -85,15 +71,10 @@ class RegistrationController < ApplicationController
       @reg = registration_params
       @contest = Contest.find_by_contestname @reg["contestname"]
       
-      if @contest == nil
-        @contest = Contest.find params[:id]
-      end
       
-      if @current_user != nil
-        @currentuserid = @current_user.id;
-      else
-        @currentuserid = nil
-      end
+      
+      (@currentuserid = @current_user) == nil || @currentuserid = @current_user.id;
+     
       
       flash[:warning] = "Registration was not updated. Please fix errors #{@registration.errors.full_messages}"
       @contestname = @contest.contestname
@@ -136,15 +117,9 @@ class RegistrationController < ApplicationController
       @reg = registration_params
       @contest = Contest.find_by_contestname @reg["contestname"]
       
-      if @contest == nil
-        @contest = Contest.find params[:id]
-      end
       
-      if @current_user != nil
-        @currentuserid = @current_user.id;
-      else
-        @currentuserid = nil
-      end
+     ( @currentuserid = @current_user ) == nil || @currentuserid = @current_user.id;
+    
       
       flash[:warning] = "Registration was not created. Please fix errors #{@registration.errors.full_messages}"
       @contestname = @contest.contestname
