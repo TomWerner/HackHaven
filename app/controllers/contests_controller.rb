@@ -1,10 +1,6 @@
 require 'date'
 
 class ContestsController < ApplicationController
-    def contest_params
-        params.require(:contest).permit(:contestname, :contestdate)
-    end
-    
     def index
         if Contest.all.blank?
             @contests = nil
