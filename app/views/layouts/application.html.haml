@@ -9,7 +9,6 @@
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Poiret+One'
     = javascript_include_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'
-    = javascript_include_tag 'vendor/assets/javascripts/bootstrap-markdown.js'
     = csrf_meta_tags
   
   %nav.navbar.navbar-default
@@ -27,23 +26,22 @@
         %ul.nav.navbar-nav
           %li{:class => (controller.class == AnnouncementsController ? 'active' : '')}
             %a{href: '/announcements'} Announcements
-          %li{:class => (controller.class == RegistrationController && controller.action_name == 'new' ? 'active' : '')}
-            =link_to "Register!", controller: "registration", action: "new"
           %li{:class => (controller.class == RegistrationController && controller.action_name == 'index' ? 'active' : '')}
             =link_to "Your Registrations", controller: "registration", action: "index"
           %li{:class => (controller.class == QuestionsController ? 'active' : '')}
             %a{href: '/questions'} Questions
           %li{:class => (controller.class == ContestsController && controller.action_name == 'index' ? 'active' : '')}
             =link_to "Upcoming Contests", controller: "contests", action: "index"
+          %li{:class => (controller.class == TeamsController && controller.action_name == 'index' ? 'active' : '')}
+            =link_to "Teams", controller: "teams", action: "index"
             
             
         %ul.nav.navbar-nav.navbar-right
           %li
             -if !@current_user
-              = button_to 'Sign up/Login', login_path, :method => :get, :id => 'login'
-            -else   
-              You are logged in as #{@current_user.name}
-              = button_to 'Logout', logout_path, :method => :delete, :id => 'logout'
+              = link_to 'Sign up/Login', login_path, :method => :get, :id => 'login'
+            -else
+              = link_to "Logout #{@current_user.name}", logout_path, :method => :delete, :id => 'logout'
             
   %body
     #main.container

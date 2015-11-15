@@ -13,6 +13,13 @@ RSpec.describe ContestsController, type: :controller do
             expect(assigns(:contests)).to eq nil
             get:index
         end
+        it 'should display 1 contest from db' do
+            @fake_con = Contest.create!(:contestname => "The Contest", :contestdate => 2015-11-11)
+            @fake_array = [@fake_con]
+            expect(Contest).to receive(:all).and_return(@fake_array)
+            expect(Contest).to receive(:all).and_return(@fake_array)
+            get :index
+        end
     end
     describe 'edit' do
         it 'should call model method to find contest based on id' do
@@ -61,6 +68,20 @@ RSpec.describe ContestsController, type: :controller do
             post :create, parameters
             expect(response).to redirect_to('/contests')
         end
+        it 'should render new template when not valid' do
+            parameters = {:id => '2', :contest => {"contestname" => "", "contestdate(1i)" => 2015, "contestdate(2i)" => 11, "contestdate(3i)" => 11}}
+            post :create, parameters
+            expect(response).to render_template("new")
+        end
     end
-
+    describe 'destroy' do
+        before :each do
+            @fake_contest = Contest.create!(:contestname => "Java", :contestdate => 2015-11-11)
+        end
+        it 'should call destroy method on contest' do
+            allow(Contest).to receive(:find).and_return(@fake_contest)
+            expect(@fake_contest).to receive(:destroy)
+            delete :destroy, id: 1
+        end
+    end
 end

@@ -1,6 +1,8 @@
-%h2 #{@question.title}
+= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js'
 
-%pre.blank-pre
+%h2.question-show-class #{@question.title}
+
+%div#question_description
     = @question.description
     
 = form_tag question_submit_path(@question), :method => :post, class: "form-group" do
@@ -8,8 +10,42 @@
         = label :submission, :language, 'Language'
         %div
             = select :submission, :language, options_for_select(@languages), class: "form-control"
+                
     %div.padded-input
         = label :submission, :code, "Code"
-        = text_area :submission, 'code', rows:"10", class: "form-control"
+        = text_area :submission, 'code', id: "editor"
         
-    = submit_tag "Submit code", class: "btn btn-primary"
+    %div.padded-input
+        = text_area :submission, 'code', id: "editor-form-submit", style: "display: none;"
+    
+    %div.row
+        %div.col-sm-6
+            %label
+                %input{id: 'toggleCustomTestCases', type: "checkbox", style: "margin: 7px;"} 
+                Test against custom input
+        %div.col-sm-6
+            = submit_tag "Submit code", class: "btn btn-success pull-right", id: "submit"
+            %button{type: "button", class: "btn btn-default pull-right", id: "customInputBtn", style: "margin-right: 7px;"} Run Custom Testcase
+    %div.row
+        %div.col-sm-6
+            = text_area '', '', id: "customInputArea", rows: 5, class: "form-control", placeholder: "Custom STDIN here"
+%div.container
+    %div.row
+        %h3#loading-indicator Loading...
+%div.panel.panel-default#custom_results
+    %div.panel-heading Custom Testcase
+    %div.panel-body
+        %label Output
+        %pre.blank-pre#custom_output_pre
+        %label Errors
+        %pre.blank-pre#custom_error_pre
+
+%div{style: "padding-bottom: 500px;"}        
+
+= javascript_include_tag 'questions_show'
+:javascript
+    $(question_show.setup(
+        "#{@last_submission_language}", 
+        "#{j @last_submission}",
+        "#{question_submit_custom_testcase_path(@question)}")
+    );

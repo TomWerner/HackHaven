@@ -1,10 +1,6 @@
 require 'date'
 
 class ContestsController < ApplicationController
-    def contest_params
-        params.require(:contest).permit(:contestname, :contestdate)
-    end
-    
     def index
         if Contest.all.blank?
             @contests = nil
@@ -22,11 +18,18 @@ class ContestsController < ApplicationController
     
     def update
         @contest = Contest.find params[:id]
-         param_hash = {}
+        param_hash = {}
         param_hash["contestname"] = params[:contest]["contestname"]
         param_hash["contestdate"] = Date.new params[:contest]["contestdate(1i)"].to_i, params[:contest]["contestdate(2i)"].to_i, params[:contest]["contestdate(3i)"].to_i
         @contest.update_attributes!(param_hash)
         flash[:notice] = "Contest Updated"
+        redirect_to :action => "index"
+    end
+    
+    def destroy
+        @contest = Contest.find params[:id]
+        @contest.destroy
+        flash[:notice] = "#{@contest.contestname} was successfully destroyed!"
         redirect_to :action => "index"
     end
     
