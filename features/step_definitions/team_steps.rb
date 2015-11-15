@@ -40,8 +40,8 @@ Then /^I should see a list entry with name "(.*?)"$/ do |role|
 end
 
 Given /^a different user has been logged in$/ do
-    click_button 'Logout'
-    click_button 'Sign up/Login'
+    click_link 'Logout'
+    click_link 'Sign up/Login'
     click_link 'Sign up for an account'
     fill_in 'signup_email', :with => 'Test2@email.com'
     fill_in 'signup_name', :with => 'Test User2'
