@@ -17,8 +17,14 @@ var question_show = {
             13: 'ace/mode/mysql',
             14: 'ace/mode/perl'
         };
-        var markdownElement = document.getElementById("question_description");
-        markdownElement.innerHTML = markdown.toHTML(markdownElement.value);
+        var description = $(".description");
+        var id = $(".id");
+        var i = 0;
+        
+        for (i = 0; i < description.length; i++) { 
+            var el = document.getElementById(id[i].value);
+            el.innerHTML = markdown.toHTML(description[i].value);
+        }
     
         var languageSelect = $('#submission_language');
         languageSelect.val(last_submission_language);

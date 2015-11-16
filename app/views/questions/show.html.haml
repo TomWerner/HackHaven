@@ -2,8 +2,10 @@
 
 %h2.question-show-class #{@question.title}
 
-%div#question_description
-    = @question.description
+%pre.blank-pre
+    = text_area :question, 'description' , rows:"5", class: "description", value: @question.description, style: "display: none"
+    = text_area :question, 'description' , rows:"5", class: "id", value: @question.id, style: "display: none"
+    %div{ :id => @question.id, :class => "message"}
     
 = form_tag question_submit_path(@question), :method => :post, class: "form-group" do
     %div.padded-input
