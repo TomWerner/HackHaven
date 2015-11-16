@@ -28,6 +28,9 @@ class ContestsController < ApplicationController
     
     def destroy
         @contest = Contest.find params[:id]
+        Question.where(contest_id: params[:id]).find_each do |question|
+            question.destroy
+        end
         @contest.destroy
         flash[:notice] = "#{@contest.contestname} was successfully destroyed!"
         redirect_to :action => "index"

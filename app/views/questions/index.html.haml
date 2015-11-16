@@ -4,6 +4,7 @@
     %div.panel.panel-default
         %div.panel-heading
             =question.title
+            %span{:style => "float: right; font-weight: bold"} Contest: #{Contest.find(question.contest_id).contestname}
         %div.panel-body 
             %pre.blank-pre
                 = text_area :question, 'description' , rows:"5", class: "description", value: question.description, style: "display: none"

@@ -9,7 +9,7 @@ class QuestionsController < ApplicationController
   end
   
   def question_params
-    params.require(:question).permit(:title, :description)
+    params.require(:question).permit(:title, :description, :contest_id)
   end
   
   def submit

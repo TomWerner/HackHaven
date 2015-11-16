@@ -7,6 +7,9 @@
       = label :question, :title, 'Title'
       = text_field :question, 'title', class: "form-control"
     %div.form-group
+      = label :question, :contest, 'Contest'
+      = collection_select(:question, 'contest_id', Contest.all, :id, :contestname)
+    %div.form-group
       = label :question, :description, 'Description'
       = text_area :question, 'description', rows:"5", class: "form-control"
 
