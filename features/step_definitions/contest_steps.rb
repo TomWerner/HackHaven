@@ -8,6 +8,11 @@ Given /^I am on the Upcoming Contests page$/ do
     visit contests_path
 end
 
+And /^I click on contest "(.*?)" from the Upcoming Contests page$/ do |contest|
+    visit contests_path
+    click_on contest
+end
+
 Then /^I should see a contest list entry with contest name "(.*?)"$/ do |contest|
     result=false
     all("tr").each do |tr|

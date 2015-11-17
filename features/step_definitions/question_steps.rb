@@ -47,6 +47,17 @@
     end  
     expect(result).to be_truthy
  end
+ 
+ Then /^I should not see a question with title "(.*?)"$/ do |title|
+     result=false
+    all(".panel").each do |panel|
+        if panel.has_content?(title)
+            result = true
+            break
+        end
+    end  
+    expect(result).to be_falsy
+ end
 
 When /^I have added a testcase with input "(.*?)" and output "(.*?)" to question "(.*?)"$/ do |input, output, title|
    visit edit_question_path(Question.find_by_title(title))
