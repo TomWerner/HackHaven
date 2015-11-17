@@ -9,6 +9,11 @@ class ContestsController < ApplicationController
         end
     end
     
+    def show
+        id = params[:id]
+        @contest = Contest.find(id)
+    end
+    
     def edit
         @contest = Contest.find params[:id]
     end

@@ -1,0 +1,17 @@
+%h1 Questions for #{@contest.contestname}
+
+- Question.where(contest_id: @contest.id).find_each do |question|
+    %div.panel.panel-default
+        %div.panel-heading
+            =question.title
+        %div.panel-body 
+            %pre.blank-pre
+                = text_area :question, 'description' , rows:"5", class: "description", value: question.description, style: "display: none"
+                = text_area :question, 'description' , rows:"5", class: "id", value: question.id, style: "display: none"
+                %div{ :id => question.id, :class => "message"}
+            %div.pull-right
+                =link_to "Solve", question_path(question), class: 'btn btn-primary'
+
+= javascript_include_tag 'questions_index'
+:javascript
+    $(question_index.setup)

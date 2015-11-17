@@ -10,6 +10,15 @@
     click_button 'Create Question'
  end
  
+ 
+ When /^I have added a question with title "(.*?)", description "(.*?)", and associated it with contest "(.*?)"$/ do |title, description, contest|
+    visit new_question_path
+    fill_in 'Title', :with => title
+    select contest, :from => 'question_contest_id'
+    fill_in 'Description', :with => description
+    click_button 'Create Question'
+ end
+ 
  When /^I have edited the "(.*?)" question to have description "(.*?)"$/ do |title, newDescription|
     question = Question.find_by_title title
     visit edit_question_path(question)
@@ -21,6 +30,17 @@
     result=false
     all(".panel").each do |panel|
         if panel.has_content?(title) && panel.all('p', :text => description)
+            result = true
+            break
+        end
+    end  
+    expect(result).to be_truthy
+ end
+ 
+ Then /^I should see a question with title "(.*?)", description "(.*?)", and contest name "(.*?)"$/ do |title, description, contest|
+    result=false
+    all(".panel").each do |panel|
+        if panel.has_content?(title) && panel.has_content?(contest) && panel.all('p', :text => description)
             result = true
             break
         end
