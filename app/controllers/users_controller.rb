@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :set_current_user
+  skip_before_filter :set_current_user, :except => [:index]
   def new
     # default: render 'new' template
   end
@@ -14,6 +14,15 @@ class UsersController < ApplicationController
       flash[:notice] = 'Sorry, user creation failed'
       redirect_to new_user_path
     end
+  end
+  
+  def index
+     if(@admin == 1)
+      redirect_to announcements_path
+     return
+    end
+    @users = User.order(:name => :desc)
+    
   end
 
 end

@@ -35,7 +35,6 @@
           %li{:class => (controller.class == TeamsController && controller.action_name == 'index' ? 'active' : '')}
             =link_to "Teams", controller: "teams", action: "index"
             
-            
         %ul.nav.navbar-nav.navbar-right
           %li
           -if !@current_user
