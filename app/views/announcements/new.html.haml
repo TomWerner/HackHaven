@@ -1,6 +1,11 @@
 %h2 Create Announcement (Please admins only)
 
 %div.central-form
+  -unless @announcement ==nil
+    -if @announcement.errors.any?
+      %ul
+      -@announcement.errors.full_messages.each do |msg|
+        %li #{msg}
   = form_tag announcements_path do
 
     %div.form-group

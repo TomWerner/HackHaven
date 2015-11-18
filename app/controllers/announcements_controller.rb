@@ -28,9 +28,13 @@ class AnnouncementsController < ApplicationController
   end
 
   def create
-    @announcement = Announcement.create!(announcement_params)
-    flash[:notice] = "'#{@announcement.title}' was successfully created."
-    redirect_to announcements_path
+    @announcement = Announcement.new(announcement_params)
+    if @announcement.save
+      flash[:notice] = "'#{@announcement.title}' was successfully created."
+      redirect_to announcements_path
+    else
+      render 'new'
+    end
   end
   
   def destroy

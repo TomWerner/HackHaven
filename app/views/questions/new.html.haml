@@ -1,6 +1,12 @@
 %h2 Create Question (Please admins only)
 
 %div.central-form
+  -unless @question ==nil
+    -if @question.errors.any?
+      %ul
+      -@question.errors.full_messages.each do |msg|
+        %li #{msg}
+
   = form_tag questions_path do
 
     %div.form-group

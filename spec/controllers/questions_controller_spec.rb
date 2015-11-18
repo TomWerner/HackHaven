@@ -109,7 +109,8 @@ RSpec.describe QuestionsController, type: :controller do
       expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
       create_params = {question: {title: "Title", description: "Content"}}
       question = Question.create(title: "Title", description: "Content")
-      expect(Question).to receive(:create!).with(create_params[:question]).and_return(question)
+      expect(Question).to receive(:new).with(create_params[:question]).and_return(question)
+      expect(question).to receive(:title).and_return("Title")
       expect(question).to receive(:title).and_return("Title")
       post :create, create_params
       expect(flash[:notice]).to eq("'Title' was successfully created.")

@@ -47,7 +47,8 @@ RSpec.describe AnnouncementsController, type: :controller do
     it 'creates the announcement' do
       create_params = {announcement: {title: "Title", content: "Content"}}
       announcement = Announcement.create(title: "Title", content: "Content")
-      expect(Announcement).to receive(:create!).with(create_params[:announcement]).and_return(announcement)
+      expect(Announcement).to receive(:new).with(create_params[:announcement]).and_return(announcement)
+      expect(announcement).to receive(:title).and_return("Title")
       expect(announcement).to receive(:title).and_return("Title")
       post :create, create_params
       expect(flash[:notice]).to eq("'Title' was successfully created.")
