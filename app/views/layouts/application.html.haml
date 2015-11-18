@@ -38,10 +38,10 @@
             
         %ul.nav.navbar-nav.navbar-right
           %li
-            -if !@current_user
-              = link_to 'Sign up/Login', login_path, :method => :get, :id => 'login'
-            -else
-              = link_to "Logout #{@current_user.name}", logout_path, :method => :delete, :id => 'logout'
+          -if !@current_user
+            = link_to 'Sign up/Login', login_path, :method => :get, :id => 'login'
+          -else
+            = link_to "Logout #{@current_user.name}", logout_path, :method => :delete, :id => 'logout'
             
   %body
     #main.container

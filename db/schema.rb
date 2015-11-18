@@ -78,11 +78,12 @@ ActiveRecord::Schema.define(version: 20151113013207) do
   add_index "testcases", ["question_id"], name: "index_testcases_on_question_id"
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.string "password_hash"
-    t.string "password_salt"
-    t.string "session_token"
+    t.string  "name"
+    t.string  "email"
+    t.string  "password_hash"
+    t.string  "password_salt"
+    t.string  "session_token"
+    t.integer "admin"
   end
 
 end

@@ -12,8 +12,9 @@ RSpec.describe UsersController, type: :controller do
                allow(fake_result).to receive(:email) {"email"}
                allow(fake_result).to receive(:password) {"password"}
                allow(fake_result).to receive(:session_token) {"session_token"}
-               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password").and_return (fake_result)
-               post :create, {:user => {:name => 'name', :email => 'email', :password => 'password'}}
+               allow(fake_result).to receive(:admin) {1}
+               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin => 1).and_return (fake_result)
+               post :create, {:user => {:name => 'name', :email => 'email', :password => 'password', ":admin" => 1}}
            end
            it "should redirect to announcements" do
                fake_result = double('user')
@@ -22,8 +23,9 @@ RSpec.describe UsersController, type: :controller do
                allow(fake_result).to receive(:email) {"email"}
                allow(fake_result).to receive(:password) {"password"}
                allow(fake_result).to receive(:session_token) {"session_token"}
-               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password").and_return (fake_result)
-               post :create, {:user => {:name => 'name', :email => 'email', :password => 'password'}}
+               allow(fake_result).to receive(:admin) {1}
+               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin =>1).and_return (fake_result)
+               post :create, {:user => {:name => 'name', :email => 'email', :password => 'password', :admin => 1}}
                expect(response).to redirect_to('/announcements')
            end
         end
@@ -35,8 +37,9 @@ RSpec.describe UsersController, type: :controller do
                allow(fake_result).to receive(:email) {"email"}
                allow(fake_result).to receive(:password) {"password"}
                allow(fake_result).to receive(:session_token) {"session_token"}
-               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password").and_return (fake_result)
-               post :create, {:user => {:name => 'name', :email => 'email', :password => 'password'}}
+               allow(fake_result).to receive(:admin) {1}
+               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin => 1).and_return (fake_result)
+               post :create, {:user => {:name => 'name', :email => 'email', :password => 'password', :admin =>1 }}
            end
            it "should redirect to login" do
                fake_result = double('user')
@@ -45,8 +48,9 @@ RSpec.describe UsersController, type: :controller do
                allow(fake_result).to receive(:email) {"email"}
                allow(fake_result).to receive(:password) {"password"}
                allow(fake_result).to receive(:session_token) {"session_token"}
-               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password").and_return (fake_result)
-               post :create, {:user => {:name => 'name', :email => 'email', :password => 'password'}}
+               allow(fake_result).to receive(:admin) {1}
+               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin => 1).and_return (fake_result)
+               post :create, {:user => {:name => 'name', :email => 'email', :password => 'password', :admin => 1}}
                expect(response).to redirect_to(new_user_path)
            end
         end

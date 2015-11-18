@@ -5,9 +5,9 @@ class UsersController < ApplicationController
   end
   
   def create
-    user = User.new(:name => params[:user][:name], :email => params[:user][:email], :password => params[:user][:password])
+    user = User.new(:name => params[:user][:name], :email => params[:user][:email], :admin => 1, :password => params[:user][:password])
     if user.save
-      flash[:notice] = 'Welcome ' + user.name + '. Your account has been created.'
+      flash[:notice] = 'Welcome ' + user.name + '. Your account has been created.' + user.admin.to_s
       session[:session_token] = user.session_token
       redirect_to announcements_path
     else
