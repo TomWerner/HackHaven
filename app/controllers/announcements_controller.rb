@@ -14,7 +14,6 @@ class AnnouncementsController < ApplicationController
   end
 
   def edit
-
      if(@admin == 1)
       redirect_to announcements_path
       return

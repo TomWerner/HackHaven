@@ -34,6 +34,9 @@
             =link_to "Upcoming Contests", controller: "contests", action: "index"
           %li{:class => (controller.class == TeamsController && controller.action_name == 'index' ? 'active' : '')}
             =link_to "Teams", controller: "teams", action: "index"
+          -if @admin == 0  
+            %li{:class => (controller.class == UsersController ? 'active' : '')}
+              %a{href: '/users'} Edit Users
             
         %ul.nav.navbar-nav.navbar-right
           %li

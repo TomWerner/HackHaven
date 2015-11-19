@@ -1,11 +1,12 @@
 -if @admin == 0  
   %h1 Users
-  %table#users
+  %table#users.table
     %thead
       %tr
         %th Name
         %th E-mail
         %th Admin
+        %th View/Edit
     %tbody
     - @users.each do |user|
       %tr
@@ -13,8 +14,9 @@
         %td= user.email
         %td
           -if user.admin == 1
-            ="is a member,change to admin"
+            ="Member"
           -elsif user.admin == 0
-            ="is an admin, change to member"
+            ="Admin"
           -else
-            ="is null"
+            ="Undefined"
+        %td= link_to "<< View/Edit >>", edit_user_path(user)

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  skip_before_filter :set_current_user, :except => [:index]
+  skip_before_filter :set_current_user, :except => [:index, :edit, :update]
+  
   def new
     # default: render 'new' template
   end
@@ -17,12 +18,36 @@ class UsersController < ApplicationController
   end
   
   def index
-     if(@admin == 1)
+    if(@admin == 1)
       redirect_to announcements_path
      return
     end
     @users = User.order(:name => :desc)
     
+  end
+  def edit
+    if(@admin == 1)
+      redirect_to users_path
+      return
+    end
+    @user = User.find params[:id]
+    @userAdmin = 1
+    if(@user.admin == 0)
+      @userAdmin = 0
+    end
+  end
+  
+  def update
+    if(@admin == 1)
+      redirect_to users_path
+      return
+    end
+    @user = User.find params[:id]
+    print params[:user_admin]
+    @user.admin = params[:user_admin]
+    @user.save
+    flash[:notice] = "'#{@user.name}' was successfully updated."
+    redirect_to users_path  
   end
 
 end

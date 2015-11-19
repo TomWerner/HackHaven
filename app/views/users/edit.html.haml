@@ -1,0 +1,15 @@
+-if @admin == 0  
+  %h2 Edit User 
+  = label :user, :name, 'Name'
+  = text_field :name, 'name', value: @user.name, :disabled=> true
+  = label :user, :email, 'E-mail'
+  = text_field :email, 'email', value: @user.email, :disabled=> true
+  %div.central-form
+    = form_tag user_path(@user), :method => :put do
+      %div.form-group
+        = label :user, :admin, 'Admin'
+        = radio_button_tag 'user_admin', 0, true
+        = label :user, :admin, 'Member'
+        = radio_button_tag 'user_admin', 1, false
+      = submit_tag 'Update User', class: "btn btn-primary", id: "submit"
+  =link_to "View User List", users_path
