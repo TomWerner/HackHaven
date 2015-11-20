@@ -8,7 +8,6 @@
     fill_in 'signup_name', :with => 'TestUser'
     fill_in 'signup_password', :with => 'Pa$$w1rd'
     click_button 'Create my account'
-    click_button 'Logout'
     
     testVal = User.find_by(name: 'TestUser')
     testVal.admin = 0
@@ -33,8 +32,6 @@ end
     fill_in 'signup_name', :with => 'TestUser'
     fill_in 'signup_password', :with => 'Pa$$w1rd'
     click_button 'Create my account'
-    click_button 'Logout'
-    
     
     testTwo = User.find_by(name: 'TestUser')
 
