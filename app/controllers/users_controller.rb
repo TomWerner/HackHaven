@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   end
   def edit
     if(@admin == 1)
-      redirect_to users_path
+      redirect_to announcements_path
       return
     end
     @user = User.find params[:id]
@@ -35,11 +35,12 @@ class UsersController < ApplicationController
     if(@user.admin == 0)
       @userAdmin = 0
     end
+      
   end
   
   def update
     if(@admin == 1)
-      redirect_to users_path
+      redirect_to announcements_path
       return
     end
     @user = User.find params[:id]

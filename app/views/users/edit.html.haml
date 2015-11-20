@@ -7,9 +7,15 @@
   %div.central-form
     = form_tag user_path(@user), :method => :put do
       %div.form-group
+      -if @userAdmin == 0
         = label :user, :admin, 'Admin'
         = radio_button_tag 'user_admin', 0, true
         = label :user, :admin, 'Member'
         = radio_button_tag 'user_admin', 1, false
+      -else
+        = label :user, :admin, 'Admin'
+        = radio_button_tag 'user_admin', 0, false
+        = label :user, :admin, 'Member'
+        = radio_button_tag 'user_admin', 1, true
       = submit_tag 'Update User', class: "btn btn-primary", id: "submit"
   =link_to "View User List", users_path

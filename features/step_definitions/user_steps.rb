@@ -132,3 +132,13 @@ When(/^I try to visit the user edit page I am redirected$/) do
   visit users_path
   expect(page.current_path).to eq(announcements_path)
 end
+
+When(/^I am on the edit user page$/) do
+  visit edit_user_path(1)
+  expect(page.current_path).to eq(edit_user_path(1))
+end
+
+When(/^I click the View User List Button, I will be redirected the user page$/) do
+  visit edit_user_path(1)
+  expect(page.current_path).to eq(edit_user_path(1))
+end

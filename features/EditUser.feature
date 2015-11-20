@@ -22,3 +22,8 @@ Feature: Admins should be able to take away or grant admin status to other users
     
     When I am not signed in
     And I try to visit the user edit page I am redirected
+  
+  Scenario: On the edit page I can return to the index page by clicking the View User List Button
+    When I am an admin
+    And I am on the edit user page
+    When I click the View User List Button, I will be redirected the user page
