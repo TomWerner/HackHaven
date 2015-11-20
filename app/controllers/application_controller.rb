@@ -19,4 +19,10 @@ class ApplicationController < ActionController::Base
     end 
   end
   
+  def require_admin
+    if @admin != 0
+      redirect_to '/'
+    end
+  end
+  
 end

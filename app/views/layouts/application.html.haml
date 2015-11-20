@@ -24,11 +24,11 @@
       
       #nav-collapse.collapse.navbar-collapse
         %ul.nav.navbar-nav
-          %li{:class => (controller.class == AnnouncementsController ? 'active' : '')}
+          %li{:class => (controller.class == AnnouncementsController && controller.action_name == 'index' ? 'active' : '')}
             %a{href: '/announcements'} Announcements
           %li{:class => (controller.class == RegistrationController && controller.action_name == 'index' ? 'active' : '')}
             =link_to "Your Registrations", controller: "registration", action: "index"
-          %li{:class => (controller.class == QuestionsController ? 'active' : '')}
+          %li{:class => (controller.class == QuestionsController && controller.action_name == 'index' ? 'active' : '')}
             %a{href: '/questions'} Questions
           %li{:class => (controller.class == ContestsController && controller.action_name == 'index' ? 'active' : '')}
             =link_to "Upcoming Contests", controller: "contests", action: "index"
@@ -37,6 +37,12 @@
           -if @admin == 0  
             %li{:class => (controller.class == UsersController ? 'active' : '')}
               %a{href: '/users'} Edit Users
+            %li{:class => (controller.class == QuestionsController && controller.action_name == 'new' ? 'active' : '')}
+              %a{href: '/questions/new'} New Question
+            %li{:class => (controller.class == ContestsController && controller.action_name == 'new' ? 'active' : '')}
+              %a{href: '/contests/new'} New Contest
+            %li{:class => (controller.class == AnnouncementsController && controller.action_name == 'new' ? 'active' : '')}
+              %a{href: '/announcements/new'} New Announcement
             
         %ul.nav.navbar-nav.navbar-right
           %li

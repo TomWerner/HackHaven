@@ -14,26 +14,17 @@ class AnnouncementsController < ApplicationController
   end
 
   def edit
-     if(@admin == 1)
-      redirect_to announcements_path
-      return
-     end
+    require_admin
     @announcement = Announcement.find params[:id]
   end
 
   def new
-    if(@admin == 1)
-      redirect_to announcements_path
-      return
-    end
+    require_admin
     #just displays the new template
   end
   
   def update
-    if(@admin == 1)
-      redirect_to announcements_path
-      return
-    end
+    require_admin
     @announcement = Announcement.find params[:id]
     @announcement.update_attributes!(announcement_params)
     flash[:notice] = "'#{@announcement.title}' was successfully updated."
@@ -41,20 +32,14 @@ class AnnouncementsController < ApplicationController
   end
 
   def create
-     if(@admin == 1)
-      redirect_to announcements_path
-      return
-     end
+    require_admin
     @announcement = Announcement.create!(announcement_params)
     flash[:notice] = "'#{@announcement.title}' was successfully created."
     redirect_to announcements_path
   end
   
   def destroy
-    if(@admin == 1)
-      redirect_to announcements_path
-      return
-    end
+    require_admin
     @announcement = Announcement.find(params[:id])
     @announcement.destroy
     flash[:notice] = "'#{@announcement.title}' was successfully deleted."

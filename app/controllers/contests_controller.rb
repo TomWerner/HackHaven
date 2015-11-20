@@ -10,13 +10,16 @@ class ContestsController < ApplicationController
     end
     
     def edit
+        require_admin
         @contest = Contest.find params[:id]
     end
     
     def new
+        require_admin
     end
     
     def update
+        require_admin
         @contest = Contest.find params[:id]
         param_hash = {}
         param_hash["contestname"] = params[:contest]["contestname"]
@@ -27,6 +30,7 @@ class ContestsController < ApplicationController
     end
     
     def destroy
+        require_admin
         @contest = Contest.find params[:id]
         @contest.destroy
         flash[:notice] = "#{@contest.contestname} was successfully destroyed!"
@@ -34,6 +38,7 @@ class ContestsController < ApplicationController
     end
     
     def create
+        require_admin
         param_hash = {}
         param_hash["contestname"] = params[:contest]["contestname"]
         param_hash["contestdate"] = Date.new params[:contest]["contestdate(1i)"].to_i, params[:contest]["contestdate(2i)"].to_i, params[:contest]["contestdate(3i)"].to_i

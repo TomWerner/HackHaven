@@ -51,14 +51,17 @@ class QuestionsController < ApplicationController
   end
   
   def edit
+    require_admin
     @question = Question.find params[:id]
   end
 
   def new
+    require_admin
     #just displays the new template
   end
   
   def update
+    require_admin
     @question = Question.find params[:id]
     @question.update_attributes!(question_params)
     flash[:notice] = "'#{@question.title}' was successfully updated."
@@ -66,12 +69,14 @@ class QuestionsController < ApplicationController
   end
 
   def create
+    require_admin
     @question = Question.create!(question_params)
     flash[:notice] = "'#{@question.title}' was successfully created."
     redirect_to questions_path
   end
   
   def destroy
+    require_admin
     @question = Question.find(params[:id])
     @question.destroy
     flash[:notice] = "'#{@question.title}' was successfully deleted."
