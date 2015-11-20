@@ -100,10 +100,15 @@ RSpec.describe UsersController, type: :controller do
             user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 0, :password => "passCode")
             user.save
             session[:session_token] = user.session_token
-            fake_result = double("user")
-            #expect(User).to receive(:find)#.with('1').and_return(fake_result)
-            #get :edit, id: 1
-            # expect(assigns(:user)).to eq(fake_result)
+            get :edit, id: 1
+            expect(response).to have_http_status(:success)
+          end
+          it "when the admin visits the eidt page, they get the correct response" do
+            user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 0, :password => "passCode")
+            user.save
+            session[:session_token] = user.session_token
+            val = get :edit, id: 1
+             expect(assigns(:user)).to eq(user)
           end
       end
       context "the user is a member" do
