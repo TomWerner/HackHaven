@@ -34,6 +34,13 @@ RSpec.describe ContestsController, type: :controller do
             expect(assigns(:contest)).to eq @fake_result
         end
     end
+    describe 'show' do
+        it 'should have access to the information about a contest' do
+           @fake_con = Contest.create!(:contestname => "The Contest", :contestdate => 2015-11-11)
+           get :show, id: 1
+           expect(response).to render_template('show')
+        end
+    end
     describe 'new' do
         it 'should render new template' do
             get :new
