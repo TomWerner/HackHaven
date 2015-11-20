@@ -7,6 +7,14 @@ Scenario:  Add an announcement as an Admin
   And I have added an announcement with title "Hawkeye Challenge" and content "The contest is on some date."
   
   Then I should see an announcement with title "Hawkeye Challenge" and content "The contest is on some date."
+
+Scenario:  Add a announcement (sad path)
+  When I am an Admin
+  When I have added an announcement with title "" and content "valid"
+  Then I should see "Title can't be blank"
+  
+  When I have added an announcement with title "title" and content ""
+  Then I should see "Content can't be blank"
   
 Scenario:  Add an announcement as regular user 
   When I try to add an announcement with title "Hawkeye Challenge" and content "The contest is on some date."
@@ -15,6 +23,7 @@ Scenario:  Add an announcement as regular user
   Then I should be rediredted to announcement index
 
 Scenario:  Add an announcement when not signed in 
+  
   When I try to add an announcement with title "Hawkeye Challenge" and content "The contest is on some date."
   And I am on the Announcements page
   And I am not signed in

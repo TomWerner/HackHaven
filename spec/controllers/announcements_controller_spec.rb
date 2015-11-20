@@ -19,7 +19,7 @@ RSpec.describe AnnouncementsController, type: :controller do
       expect(announcements[1].title).to eq("First announcement")
     end
   end
-    describe 'GET #edit' do
+  describe 'GET #edit' do
     context "as an admin" do
       it 'assigns the @announcement variable' do
         user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 0, :password => "passCode")
@@ -51,7 +51,7 @@ RSpec.describe AnnouncementsController, type: :controller do
     end
   end
   
-describe 'GET #new' do
+  describe 'GET #new' do
     context "as a regular member" do 
       it 'attempts to assign the @announcement variable as a non-admin user' do
         user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 1, :password => "passCode")
@@ -124,7 +124,8 @@ describe 'GET #new' do
         session[:session_token] = user.session_token
         create_params = {announcement: {title: "Title", content: "Content"}}
         announcement = Announcement.create(title: "Title", content: "Content")
-        expect(Announcement).to receive(:create!).with(create_params[:announcement]).and_return(announcement)
+        expect(Announcement).to receive(:new).with(create_params[:announcement]).and_return(announcement)
+        expect(announcement).to receive(:save).and_return(announcement)
         expect(announcement).to receive(:title).and_return("Title")
         post :create, create_params
         expect(flash[:notice]).to eq("'Title' was successfully created.")
@@ -151,7 +152,7 @@ describe 'GET #new' do
         post :create, create_params
         expect(flash[:notice]).to eq(nil)
         expect(response).to redirect_to(announcements_path)
-      end      
+      end   
     end
   end
   
