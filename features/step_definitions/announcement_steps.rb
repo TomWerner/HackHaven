@@ -8,7 +8,6 @@
     fill_in 'signup_name', :with => 'TestUser'
     fill_in 'signup_password', :with => 'Pa$$w1rd'
     click_button 'Create my account'
-    click_button 'Logout'
     
     testVal = User.find_by(name: 'TestUser')
     testVal.admin = 0
@@ -33,8 +32,6 @@ end
     fill_in 'signup_name', :with => 'TestUser'
     fill_in 'signup_password', :with => 'Pa$$w1rd'
     click_button 'Create my account'
-    click_button 'Logout'
-    
     
     testTwo = User.find_by(name: 'TestUser')
 
@@ -48,7 +45,6 @@ end
 
  When /^I have added an announcement with title "(.*?)" and content "(.*?)"$/ do |title, content|
     visit new_announcement_path
-    #print page.html
     fill_in 'Title', :with => title
     fill_in 'Content', :with => content
     click_button 'Create Announcement' 
@@ -79,6 +75,19 @@ end
     end
  end
  
+ When(/^I try to edit the "(.*?)" announcement to have content "(.*?)"$/) do |arg1, arg2|
+  visit announcements_path
+  result = false
+  
+  begin
+    field = find_link("<< Edit >>")
+  rescue Capybara::ElementNotFound
+    # In Capybara 0.4+ #find_field raises an error instead of returning nil
+    result =true
+   end
+   expect(result).to be(true)
+ end
+
  Then(/^I should be rediredted to announcement index$/) do
      expect(announcements_path). to eq(page.current_path)
  end
