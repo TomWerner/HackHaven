@@ -58,6 +58,7 @@ When(/^I am an admin$/) do
     expect(page.body).to have_content("TestUser")
 end
 
+
 When(/^I am on the user page$/) do
   visit users_path
 end
@@ -120,4 +121,14 @@ Then(/^I should view the name "(.*?)", the email "(.*?)", and he is "(.*?)"$/) d
     i = i+ 1
   end 
     expect(result).to be_truthy
+end
+
+When(/^I try to visit the user index page I am redirected$/) do
+  visit users_path
+  expect(page.current_path).to eq(announcements_path)
+end
+
+When(/^I try to visit the user edit page I am redirected$/) do
+  visit users_path
+  expect(page.current_path).to eq(announcements_path)
 end
