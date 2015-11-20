@@ -1,4 +1,4 @@
-Feature: Users should be able to edit announcements
+Feature: Users should be able to edit announcements, if they are admins
 
 Scenario:  Edit announcement
   When I am an Admin

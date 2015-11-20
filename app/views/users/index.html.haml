@@ -7,9 +7,9 @@
         %th E-mail
         %th Admin
         %th View/Edit
-    %tbody
+    %tbody.tbody
     - @users.each do |user|
-      %tr
+      %tr.rowVal
         %td= user.name
         %td= user.email
         %td
