@@ -26,7 +26,7 @@ RSpec.describe TestcasesController, type: :controller do
   describe '#update' do
     it 'assigns updates @question and @testcase variable' do
       update = {testcase: {stdin: "New input", stdout: "New output"}}
-      question = Question.create(title: "Title", description: "Content")
+      question = Question.create(title: "Title", description: "Content", contest_id: "3")
       testcase = Testcase.create(stdin: "Input", stdout: "Output")
       expect(Question).to receive(:find_by_id).with("1").and_return(question)
       expect(Testcase).to receive(:find).with("123").and_return(testcase)
@@ -42,7 +42,7 @@ RSpec.describe TestcasesController, type: :controller do
   describe '#create' do
     it 'creates the question' do
       create_params = {testcase: {stdin: "Input", stdout: "Output"}}
-      question = Question.create(title: "Title", description: "Content")
+      question = Question.create(title: "Title", description: "Content", contest_id: "3")
       testcase = Testcase.create(stdin: "in", stdout: "out")
       expect(Testcase).to receive(:create!).with(create_params[:testcase]).and_return(testcase)
       expect(Question).to receive(:find_by_id).with("1").and_return(question)
@@ -59,7 +59,7 @@ RSpec.describe TestcasesController, type: :controller do
     it 'destroys the question' do
       destroy_params = {question_id: 1, id: 1, testcase: {stdin: "In", stdout: "Out"}}
       testcase = Testcase.create(stdin: "In", stdout: "Out")
-      question = Question.create(title: "Title", description: "Content")
+      question = Question.create(title: "Title", description: "Content", contest_id: "3")
       expect(Question).to receive(:find_by_id).with("1").and_return(question)
       expect(Testcase).to receive(:find).with("1").and_return(testcase)
       expect(testcase).to receive(:destroy)

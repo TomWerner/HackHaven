@@ -16,8 +16,8 @@ RSpec.describe QuestionsController, type: :controller do
     end
     
     it "returns the questions" do
-      Question.create!(title:"First Question", description:"My content")
-      Question.create!(title:"Second Question", description:"Other content")
+      Question.create!(title:"First Question", description:"My content", contest_id: "3")
+      Question.create!(title:"Second Question", description:"Other content", contest_id: "3")
       questions = QuestionsController.new.index
       
       expect(questions.size).to equal(2)
@@ -41,7 +41,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
     it "checks the latest submissions - none" do
       session[:session_token] = 123
-      Question.create!(title: "title", description: "description")
+      Question.create!(title: "title", description: "description", contest_id: "3")
       expect(User).to receive(:find_by_session_token).and_return(
         User.create!(name: "Tom", email: "Tom", password: "Password"))
       empty_results = double('item')
@@ -54,7 +54,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
     it "checks the latest submissions - multiple" do
       session[:session_token] = 123
-      Question.create!(title: "title", description: "description")
+      Question.create!(title: "title", description: "description", contest_id: "3")
       expect(User).to receive(:find_by_session_token).and_return(
         User.create!(name: "Tom", email: "Tom", password: "Password"))
       Submission.create!(code: "first", language: 1, user_id: 1, question_id: "1")
@@ -81,6 +81,23 @@ RSpec.describe QuestionsController, type: :controller do
       get :edit, id: 1
       expect(response).to redirect_to(login_path)
     end
+    it "redirects to the home page if not admin but logged in" do
+      user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 1, :password => "passCode")
+      user.save
+      session[:session_token] = user.session_token
+      get :edit, id: 1
+      expect(response).to redirect_to('/')
+    end
+  end
+  
+  describe "#new" do
+    it "redirects to the home page if not admin but logged in" do
+      user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 1, :password => "passCode")
+      user.save
+      session[:session_token] = user.session_token
+      get :new
+      expect(response).to redirect_to('/')
+    end
   end
   
   describe '#update' do
@@ -102,6 +119,14 @@ RSpec.describe QuestionsController, type: :controller do
       update = {id: 1, question: {title: "New title", description: "New content"}}
       post :update, update
       expect(response).to redirect_to(login_path)
+    end
+    it "redirects to the home page if not admin but logged in" do
+      user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 1, :password => "passCode")
+      user.save
+      session[:session_token] = user.session_token
+      update = {id: 1, question: {title: "New title", description: "New content"}}
+      post :update, update
+      expect(response).to redirect_to('/')
     end
   end
   
@@ -125,6 +150,26 @@ RSpec.describe QuestionsController, type: :controller do
       post :create, create_params
       expect(response).to redirect_to(login_path)
     end
+    it "redirects to the home page if not admin but logged in" do
+      user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 1, :password => "passCode")
+      user.save
+      session[:session_token] = user.session_token
+      create_params = {question: {title: "Title", description: "Content"}}
+      post :create, create_params
+      expect(response).to redirect_to('/')
+    end
+    it "renders new if there are errors" do
+      user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 0, :password => "passCode")
+      user.save
+      session[:session_token] = user.session_token
+      number = 1
+      create_params = {question: {title: "Title", description: "Content", contest_id: "1"}}
+      question = Question.create(title: "Title", description: "Content", contest_id: 1)
+      expect(Question).to receive(:new).with(create_params[:question]).and_return(question)
+      expect(question).to receive(:save).and_return(nil) #error with validations, couldn't save
+      post :create, create_params
+      expect(response).to render_template('new')
+    end
   end
   
   describe '#destroy' do
@@ -145,6 +190,14 @@ RSpec.describe QuestionsController, type: :controller do
       destroy_params = {id: 1, question: {title: "Title", description: "Content"}}
       post :destroy, destroy_params
       expect(response).to redirect_to(login_path)
+    end
+    it "redirects to the home page if not admin but logged in" do
+      user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 1, :password => "passCode")
+      user.save
+      session[:session_token] = user.session_token
+      destroy_params = {id: 1, question: {title: "Title", description: "Content"}}
+      post :destroy, destroy_params
+      expect(response).to redirect_to('/')
     end
   end
   
