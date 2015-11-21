@@ -1,8 +1,7 @@
 Feature: Allow HackHaven user to add a registration
   
 Background: user has been added to HackHaven
-  
-  Given a user has been logged in
+  Given I am an Admin
   Given a contest has been created with name "Cool Contest"
     
   

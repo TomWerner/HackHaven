@@ -2,7 +2,7 @@ Feature: Allow HackHaven user to edit a registration
   
 Background: user has been added to HackHaven
   
-  Given a user has been logged in
+  Given an Admin has been logged in
   Given a contest has been created with name "Cool Contest"
   Given a contest has been created with name "Cooler Contest"
   

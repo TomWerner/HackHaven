@@ -8,7 +8,9 @@
           <th>Contest Name</th>
           <th>Contest Date</th>
           <th>Options</th>
-          <th>Edit</th>
+          <% if @admin == 0 %>
+            <th>Edit</th>
+          <% end %>
         </tr>
         <% @contests.each do |contest| %>
           <tr>

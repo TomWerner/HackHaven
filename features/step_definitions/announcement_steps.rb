@@ -23,6 +23,29 @@
     expect(page.body).to have_content("TestUser")
     
  end
+ 
+Given(/^an Admin has been logged in$/) do
+    visit new_user_path
+    fill_in 'signup_email', :with => 'TestUser@email.com'
+    fill_in 'signup_name', :with => 'TestUser'
+    fill_in 'signup_password', :with => 'Pa$$w1rd'
+    click_button 'Create my account'
+    
+    testVal = User.find_by(name: 'TestUser')
+    testVal.admin = 0
+    testVal.save
+    
+    testTwo = User.find_by(name: 'TestUser')
+
+    visit login_path
+    fill_in 'login_email', :with => 'TestUser@email.com'
+    fill_in 'login_password', :with => 'Pa$$w1rd'
+    click_button 'Login to my account'
+
+    expect(page.body).to have_content("TestUser")
+    
+ end
+ 
 When(/^I am not signed in$/) do
   
 end

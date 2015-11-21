@@ -2,7 +2,7 @@ Feature: Allow HackHaven users to be team captains and team members
 
 Background: user has been added to HackHaven
   
-  Given a user has been logged in
+  Given an Admin has been logged in
   Given a contest has been created with name "Semicolonless Contest"
   Given a team with name "The Ohms" has been added for "Semicolonless Contest"
   

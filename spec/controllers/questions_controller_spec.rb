@@ -68,24 +68,26 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'GET #edit' do
-    it 'assigns the @question variable if logged in' do
-      session[:session_token] = 123
-      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
+    it 'assigns the @question variable if admin' do
+      user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 0, :password => "passCode")
+      user.save
+      session[:session_token] = user.session_token
       fake_result = double('question')
       expect(Question).to receive(:find).with('1').and_return(fake_result)
       get :edit, id: 1
       expect(assigns(:question)).to eq(fake_result)
     end
-    it "redirects to the login page if not logged in" do
+    it "redirects to the login page if not admin or not logged in" do
       get :edit, id: 1
       expect(response).to redirect_to(login_path)
     end
   end
   
   describe '#update' do
-    it 'assigns updates @question variable if logged in' do
-      session[:session_token] = 123
-      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
+    it 'assigns updates @question variable if admin' do
+      user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 0, :password => "passCode")
+      user.save
+      session[:session_token] = user.session_token
       update = {question: {title: "New title", description: "New content"}}
       question = Question.create(title: "Title", description: "Content")
       expect(Question).to receive(:find).with("1").and_return(question)
@@ -96,7 +98,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(flash[:notice]).to eq("'New title' was successfully updated.")
       expect(response).to redirect_to(questions_path)
     end
-    it "redirects to the login page if not logged in" do
+    it "redirects to the login page if not admin or not logged in" do
       update = {id: 1, question: {title: "New title", description: "New content"}}
       post :update, update
       expect(response).to redirect_to(login_path)
@@ -104,11 +106,11 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe '#create' do
-    it 'creates the question if logged in' do
-      session[:session_token] = 123
+    it 'creates the question if admin' do
+      user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 0, :password => "passCode")
+      user.save
+      session[:session_token] = user.session_token
       number = 1
-      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
-      
       create_params = {question: {title: "Title", description: "Content", contest_id: "1"}}
       question = Question.create(title: "Title", description: "Content", contest_id: 1)
       expect(Question).to receive(:new).with(create_params[:question]).and_return(question)
@@ -118,7 +120,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(flash[:notice]).to eq("'Title' was successfully created.")
       expect(response).to redirect_to(questions_path)
     end
-    it "redirects to the login page if not logged in" do
+    it "redirects to the login page if not admin or not logged in" do
       create_params = {question: {title: "Title", description: "Content"}}
       post :create, create_params
       expect(response).to redirect_to(login_path)
@@ -126,9 +128,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe '#destroy' do
-    it 'destroys the question if logged in' do
-      session[:session_token] = 123
-      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
+    it 'destroys the question if admin' do
+      user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 0, :password => "passCode")
+      user.save
+      session[:session_token] = user.session_token
       destroy_params = {id: 1, question: {title: "Title", description: "Content"}}
       question = Question.create(title: "Title", description: "Content")
       expect(Question).to receive(:find).with("1").and_return(question)
@@ -138,7 +141,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(flash[:notice]).to eq("'Title' was successfully deleted.")
       expect(response).to redirect_to(questions_path)
     end
-    it "redirects to the login page if not logged in" do
+    it "redirects to the login page if not admin or not logged in" do
       destroy_params = {id: 1, question: {title: "Title", description: "Content"}}
       post :destroy, destroy_params
       expect(response).to redirect_to(login_path)

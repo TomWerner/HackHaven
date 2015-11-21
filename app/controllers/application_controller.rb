@@ -20,8 +20,14 @@ class ApplicationController < ActionController::Base
   end
   
   def require_admin
+    redirect_to('/') and return
+
+    if !redirect_path
+      redirect_path = '/'
+    end
+
     if @admin != 0
-      redirect_to '/'
+      redirect_to(redirect_path) and return
     end
   end
   

@@ -15,16 +15,22 @@ class ContestsController < ApplicationController
     end
     
     def edit
-        require_admin
+        if @admin != 0
+            redirect_to('/') and return
+        end
         @contest = Contest.find params[:id]
     end
     
     def new
-        require_admin
+        if @admin != 0
+            redirect_to('/') and return
+        end
     end
     
     def update
-        require_admin
+        if @admin != 0
+            redirect_to('/') and return
+        end
         @contest = Contest.find params[:id]
         param_hash = {}
         param_hash["contestname"] = params[:contest]["contestname"]
@@ -35,7 +41,9 @@ class ContestsController < ApplicationController
     end
     
     def destroy
-        require_admin
+        if @admin != 0
+            redirect_to('/') and return
+        end
         @contest = Contest.find params[:id]
         Question.where(contest_id: params[:id]).find_each do |question|
             question.destroy
@@ -46,7 +54,9 @@ class ContestsController < ApplicationController
     end
     
     def create
-        require_admin
+        if @admin != 0
+            redirect_to('/') and return
+        end
         param_hash = {}
         param_hash["contestname"] = params[:contest]["contestname"]
         param_hash["contestdate"] = Date.new params[:contest]["contestdate(1i)"].to_i, params[:contest]["contestdate(2i)"].to_i, params[:contest]["contestdate(3i)"].to_i

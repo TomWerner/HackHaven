@@ -36,7 +36,6 @@ RSpec.describe AnnouncementsController, type: :controller do
         user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 1, :password => "passCode")
         user.save
         session[:session_token] = user.session_token
-        fake_result = double('announcement')
         get :edit, id: 1
         expect(response).to redirect_to('/announcements')
       end
@@ -44,7 +43,6 @@ RSpec.describe AnnouncementsController, type: :controller do
     context "when not logged in" do 
       it 'attempts to assign the @announcement variable as a non-admin, non-user' do
         session[:session_token] = nil
-        fake_result = double('announcement')
         get :edit, id: 1
         expect(response).to redirect_to('/announcements')
       end      
@@ -100,7 +98,7 @@ RSpec.describe AnnouncementsController, type: :controller do
         update[:id] = 1
         post :update, update
         expect(flash[:notice]).to eq(nil)
-       expect(response).to redirect_to(announcements_path)
+        expect(response).to redirect_to(announcements_path)
       end
     end
     context "as a non-admin and a non-user" do
