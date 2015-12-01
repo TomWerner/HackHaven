@@ -30,6 +30,14 @@ When /^I have added a registration with contest name "(.*?)"$/ do |contest|
     click_button 'Submit'
 end
 
+Given /^I am on the Contest Page$/ do
+    visit contests_path
+end
+
+When /^I click on the "(.*?)" link$/ do |link_name|
+    click_link link_name
+end
+
 Then /^I should see a registration list entry with contest name "(.*?)"$/ do |contest|
     result=false
     all("tr").each do |tr|
