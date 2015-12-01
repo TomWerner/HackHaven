@@ -1,0 +1,17 @@
+<h1>Leaderboard</h1>
+<%if @teams.blank? %>
+    No Teams
+<% else %>
+    <br>
+    <table class="table table-striped">
+      <tr>
+        <th>Team Name</th>
+        <th>Points</th>
+      </tr>
+      <% @teams.each do |team| %>
+        <tr>
+          <td><%= team.name %></td>
+          <td><%= team.points %></td>
+        </tr>
+      <% end %>
+<% end %>
