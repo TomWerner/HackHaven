@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151116155842) do
+ActiveRecord::Schema.define(version: 20151201031730) do
 
   create_table "announcements", force: :cascade do |t|
     t.string   "title"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20151116155842) do
     t.boolean  "correct"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "team"
   end
 
   create_table "teams", force: :cascade do |t|
@@ -68,6 +69,7 @@ ActiveRecord::Schema.define(version: 20151116155842) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "contestname"
+    t.integer  "points"
   end
 
   create_table "testcases", force: :cascade do |t|

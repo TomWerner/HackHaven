@@ -8,14 +8,12 @@
         <th>Teams</th>
         <th>Contest</th>
         <th>Team Captain</th>
-        <th>Rank</th>
       </tr>
       <% @teams.each do |team| %>
         <tr>
           <td><%= team.name %></td>
           <td><%= team.contestname %></td>
           <td><%= (User.find team.captain).name %></td>
-          <td>TBD</td>
         </tr>
       <% end %>
 <% end %>

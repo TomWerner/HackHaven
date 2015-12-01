@@ -59,9 +59,24 @@ class RegistrationController < ApplicationController
     if @registration.update_attributes(@registrar)
       @registration.save!
       if @reg["team"] == "Create Own Team"
-          if(@newteam = Team.new(:captain => @registrar["userid"], :name => @reg["newteam"], :contestname => @reg["contestname"])).valid?
+          if(@newteam = Team.new(:captain => @registrar["userid"], :name => @reg["newteam"], :contestname => @reg["contestname"], :points => 0)).valid?
             @newteam.save!
             flash[:notice] = "You are now the captain of #{@newteam.name}."
+          else
+            @reg = registration_params
+            @contest = Contest.find_by_contestname @reg["contestname"]
+            
+            
+           ( @currentuserid = @current_user ) == nil || @currentuserid = @current_user.id;
+          
+            
+            flash[:warning] = "Registration was not created. Team Name taken"
+            @contestname = @contest.contestname
+            
+            @teams = Team.where(:contestname => @contestname)
+            
+            render :action => "new", :id => @contest.id
+            return
           end
       end
         
@@ -105,9 +120,24 @@ class RegistrationController < ApplicationController
       @registration.save!
       #Note to self: look into that one lecture and make this that cool relationally db way
       if @reg["team"] == "Create Own Team"
-        if(@newteam = Team.new(:captain => @registrar["userid"], :name => @reg["newteam"], :contestname => @reg["contestname"])).valid?
+        if(@newteam = Team.new(:captain => @registrar["userid"], :name => @reg["newteam"], :contestname => @reg["contestname"], :points => 0)).valid?
           @newteam.save!
           flash[:notice] = "You are now the captain of #{@newteam.name}."
+        else
+          @reg = registration_params
+          @contest = Contest.find_by_contestname @reg["contestname"]
+          
+          
+         ( @currentuserid = @current_user ) == nil || @currentuserid = @current_user.id;
+        
+          
+          flash[:warning] = "Registration was not created. Team Name Taken"
+          @contestname = @contest.contestname
+          
+          @teams = Team.where(:contestname => @contestname)
+          
+          render :action => "new", :id => @contest.id
+          return
         end
       end
       

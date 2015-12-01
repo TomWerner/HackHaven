@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   resources :teams
   get 'teams/remove/:id' => 'teams#remove'
   get 'teams/captainize/:id' => 'teams#captainize'
+  get 'teams/leaderboard/:id' => 'teams#leaderboard'
+  
   
   
   # The priority is based upon order of creation: first created -> highest priority.

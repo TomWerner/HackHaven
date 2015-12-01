@@ -14,12 +14,32 @@ class QuestionsController < ApplicationController
   
   def submit
     @results = Compilebox.submit_code(params[:question_id], params[:submission][:language], params[:submission][:code])
-    Submission.create!({question_id: params[:question_id], 
+    @question = Question.find params[:question_id]
+    @contest = Contest.find @question.contest_id
+    @reg = Registration.where(userid: @current_user.id, contestname: @contest.contestname).first
+    if @reg != nil
+      @team = @reg.team
+      @already_sub = (Submission.where(team: @team, question_id: params[:question_id] ) != [])
+    else
+      @team = 'None'
+      @already_sub = true
+    end
+    
+    @submission = Submission.create!({question_id: params[:question_id], 
       user_id: @current_user.id, 
       code: params[:submission][:code],
+      team: @team,
       language: params[:submission][:language],
       correct: ((@results.select {|x| x =~ /^Correct!$/}) == @results)
     })
+    if @submission != nil && !@already_sub
+      if @submission.correct
+        @team_a = Team.where(name: @team, contestname: @contest.contestname).first
+        @team_a.points = @team_a.points + 1
+        @team_a.save!
+      end
+    end
+    @submission
   end
   
   def submit_custom_testcase

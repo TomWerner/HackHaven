@@ -21,6 +21,24 @@ RSpec.describe TeamsController, type: :controller do
             get :index
         end
     end
+    describe 'leaderboard' do
+        it 'should render the index template' do
+            get :leaderboard, id: 1, contestname: 'Fighting in Fortran'
+            expect(response).to render_template('leaderboard')
+        end
+        it 'should display no teams because no teams in db' do
+            expect(assigns(:teams)).to eq nil
+            get :leaderboard, id: 1, contestname: 'Matlab Mayhem'
+        end
+        it 'should display Teams in order of points' do
+            @fake_team = Team.create!(:name => "fake", :contestname => "Matlab Mayhem", :captain => "3", :points => 3)
+            @fake_team2 = Team.create!(:name => "fake2", :contestname => "Matlab Mayhem", :captain => "3", :points => 2)
+            @fake_teams = [@fake_team, @fake_team2]
+            expect(Team).to receive_message_chain(:where, :order).and_return(@fake_teams)
+            #expect(@fake_teams).to receive(:order)
+            get :leaderboard, id: 1, contestname: 'Matlab Mayhem'
+        end
+    end
     describe 'show' do
         before :each do
             @fake_team = Team.create!(:id => "3", :name => "fake", :contestname => "Fake", :captain => "3")

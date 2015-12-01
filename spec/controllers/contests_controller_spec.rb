@@ -104,15 +104,15 @@ RSpec.describe ContestsController, type: :controller do
     end
     describe 'destroy' do
         before :each do
-            @fake_contest = Contest.create!(:contestname => "Java", :contestdate => 2015-11-11)
+            @fake_c = Contest.create!(:id => 90, :contestname => "Java Jokes", :contestdate => 2017-11-11)
         end
         it 'should call destroy method on contest' do
             user = User.new(:name => "Kaitlyn", :email => "Kaitlyn@aol.com", :admin => 0, :password => "passCode")
             user.save
             session[:session_token] = user.session_token
-            allow(Contest).to receive(:find).and_return(@fake_contest)
-            expect(@fake_contest).to receive(:destroy)
-            delete :destroy, id: 1
+            expect(Contest).to receive(:find).and_return(@fake_c)
+            expect(@fake_c).to receive(:destroy)
+            delete :destroy, id: 90
         end
     end
 end

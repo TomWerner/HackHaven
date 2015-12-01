@@ -7,6 +7,14 @@ class TeamsController < ApplicationController
     end
   end
   
+  def leaderboard
+    if Team.all.blank?
+        @teams = nil
+    else
+        @teams = Team.where(contestname: params[:contestname]).order(:points => :desc)
+    end
+  end
+  
   def show
     @team = Team.find params[:id]
     @regs = Registration.where(:team => @team.name)

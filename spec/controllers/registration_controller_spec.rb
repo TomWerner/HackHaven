@@ -123,6 +123,20 @@ describe RegistrationController, type: :controller do
             post :create, parameters
             expect(response).to render_template('registration/new')
         end
+        it 'be redirected to new when team not valid' do
+            Team.create!(:name => "Cobra", :contestname => "contest1", :captain => "3")
+            @fake_result = Registration.create!(:userid => "3", :firstname => "Fake", :lastname => "fake", :email => "fake_email", :year => "fake", :major => "fake", :contestname => "contest1", :team => "Cobra")
+            parameters = {:registration => {:userid => "3", :firstname => "new name", :lastname => "fake", :email => "fake_email", :year => "fake", :major => "fake", :contestname => "contest1", :team => "Create Own Team", :selectedteam => "fake", :newteam => "Cobra"}}
+            pars = {"userid" => "3", "firstname" => "new name", "lastname" => "fake", "email" => "fake_email", "year" => "fake", "major" => "fake", "contestname" => "contest1", "team" => "awesome2", "selectedteam" => "fake", "newteam" => "Cobra"}
+
+            allow(Registration).to receive(:new).with({"userid" => "3", "firstname" => "new name", "lastname" => "fake", "email" => "fake_email", "year" => "fake", "major" => "fake", "contestname" => "contest1", "team" => "Cobra", "selectedteam" => "fake", "newteam" => "Cobra"}).and_return(@fake_result)
+            expect(@fake_result).to receive(:save!)
+            @fake_t = Team.new(:captain => "3", :contestname => "contest1", :name => "awesome2")
+            expect(Team).to receive(:new).and_return(@fake_t)
+            expect(@fake_t).to receive(:valid?).and_return false
+            post :create, parameters
+            expect(response).to render_template('registration/new')
+        end
         it 'should create new team!' do
             @fake_result = Registration.create!(:userid => "3", :firstname => "Fake", :lastname => "fake", :email => "fake_email", :year => "fake", :major => "fake", :contestname => "contest1", :team => "awesome2")
             parameters = {:registration => {:userid => "3", :firstname => "new name", :lastname => "fake", :email => "fake_email", :year => "fake", :major => "fake", :contestname => "contest1", :team => "Create Own Team", :selectedteam => "fake", :newteam => "awesome2"}}

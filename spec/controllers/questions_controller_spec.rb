@@ -202,6 +202,14 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'POST #submit' do
+    before :each do
+      @fake_result = Registration.create!(:userid => "3", :firstname => "Fake", :lastname => "fake", :email => "fake_email", :year => "fake", :major => "fake", :contestname => "contest1", :team => "awesome", :id => "3")
+      @fake_result2 = Registration.create!(:userid => "4", :firstname => "Fake", :lastname => "fake", :email => "fake_email", :year => "fake", :major => "fake", :contestname => "contest2", :team => "aweesome", :id => "4")
+      @results = [@fake_result, @fake_result2]
+      allow(Question).to receive(:find).and_return(Question.new(id: 123, contest_id: 1))
+      allow(Contest).to receive(:find).and_return(Contest.new(id: 1))
+      allow(Registration).to receive(:where).and_return(@results)
+    end
     it 'calls compilebox if logged in' do
       session[:session_token] = 123
       expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
@@ -228,7 +236,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(Compilebox).to receive(:submit_code).with("123", "0", "print('Hello')").and_return(fake_results)
       
       expect(Submission).to receive(:create!).with({
-        question_id: "123", user_id: 1, code: "print('Hello')", 
+        question_id: "123", user_id: 1, team: "awesome", code: "print('Hello')", 
         language: "0", correct: false
       })
       post :submit, submission_params
@@ -243,7 +251,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(Compilebox).to receive(:submit_code).with("123", "0", "print('Hello')").and_return(fake_results)
       
       expect(Submission).to receive(:create!).with({
-        question_id: "123", user_id: 1, code: "print('Hello')", 
+        question_id: "123", user_id: 1, code: "print('Hello')", team: "awesome", 
         language: "0", correct: true
       })
       post :submit, submission_params
