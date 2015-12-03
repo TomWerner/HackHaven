@@ -213,6 +213,15 @@ RSpec.describe QuestionsController, type: :controller do
       allow(Contest).to receive(:find).and_return(Contest.new(id: 1))
       allow(Registration).to receive(:where).and_return(@results)
     end
+    it 'should redirect to the home page if not confirmed' do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom", confirmed: false))
+      submission_params = {question_id: 123, submission: {language: "0", code: "print('Hello')"}}
+      
+      post :submit, submission_params
+      
+      expect(response).to redirect_to('/')
+    end
     it 'calls compilebox if logged in' do
       session[:session_token] = 123
       expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
@@ -278,6 +287,16 @@ RSpec.describe QuestionsController, type: :controller do
       submission_params = {question_id: 123, submission: {language: "0", code: "print('Hello')"}}
       post :submit_custom_testcase, submission_params
       expect(response).to redirect_to(login_path)
+    end
+    
+    it 'should redirect to the home page if not confirmed' do
+      session[:session_token] = 123
+      expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom", confirmed: false))
+      submission_params = {question_id: 0, submission: {stdin: "input", language: "0", code: "print('Hello')"}}
+      
+      post :submit_custom_testcase, submission_params
+      
+      expect(response).to redirect_to('/')
     end
   end
 end

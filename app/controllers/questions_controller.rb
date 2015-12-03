@@ -13,6 +13,11 @@ class QuestionsController < ApplicationController
   end
   
   def submit
+    if @current_user.confirmed == false
+      flash[:notice] = "Sorry, please confirm your email account to do that"
+      redirect_to '/'
+      return
+    end
     @results = Compilebox.submit_code(params[:question_id], params[:submission][:language], params[:submission][:code])
     @question = Question.find params[:question_id]
     @contest = Contest.find @question.contest_id
@@ -43,6 +48,12 @@ class QuestionsController < ApplicationController
   end
   
   def submit_custom_testcase
+    if @current_user.confirmed == false
+      flash[:notice] = "Sorry, please confirm your email account to do that"
+      redirect_to '/'
+      return
+    end
+    
     language = params[:submission][:language]
     code = params[:submission][:code]
     stdin = params[:submission][:stdin]
