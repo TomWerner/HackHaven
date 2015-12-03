@@ -13,7 +13,13 @@ RSpec.describe UsersController, type: :controller do
                allow(fake_result).to receive(:password) {"password"}
                allow(fake_result).to receive(:session_token) {"session_token"}
                allow(fake_result).to receive(:admin) {1}
-               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin => 1).and_return (fake_result)
+               allow(fake_result).to receive(:confirmation_code) {123}
+               allow(fake_result).to receive(:confirmed) {false}
+               expect(SecureRandom).to receive(:base64).and_return(123)
+               fake_mailer = double('mailer')
+               expect(UserMailer).to receive(:email_confirmation).with(fake_result).and_return(fake_mailer)
+               expect(fake_mailer).to receive(:deliver_later)
+               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin => 1, confirmation_code: 123, confirmed: false).and_return (fake_result)
                post :create, {:user => {:name => 'name', :email => 'email', :password => 'password', ":admin" => 1}}
            end
            it "should redirect to announcements" do
@@ -24,7 +30,13 @@ RSpec.describe UsersController, type: :controller do
                allow(fake_result).to receive(:password) {"password"}
                allow(fake_result).to receive(:session_token) {"session_token"}
                allow(fake_result).to receive(:admin) {1}
-               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin =>1).and_return (fake_result)
+               allow(fake_result).to receive(:confirmation_code) {123}
+               allow(fake_result).to receive(:confirmed) {false}
+               expect(SecureRandom).to receive(:base64).and_return(123)
+               fake_mailer = double('mailer')
+               expect(UserMailer).to receive(:email_confirmation).with(fake_result).and_return(fake_mailer)
+               expect(fake_mailer).to receive(:deliver_later)
+               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin =>1, confirmation_code: 123, confirmed: false).and_return (fake_result)
                post :create, {:user => {:name => 'name', :email => 'email', :password => 'password', :admin => 1}}
                expect(response).to redirect_to('/announcements')
            end
@@ -38,7 +50,10 @@ RSpec.describe UsersController, type: :controller do
                allow(fake_result).to receive(:password) {"password"}
                allow(fake_result).to receive(:session_token) {"session_token"}
                allow(fake_result).to receive(:admin) {1}
-               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin => 1).and_return (fake_result)
+               allow(fake_result).to receive(:confirmation_code) {123}
+               allow(fake_result).to receive(:confirmed) {false}
+               expect(SecureRandom).to receive(:base64).and_return(123)
+               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin => 1, confirmation_code: 123, confirmed: false).and_return (fake_result)
                post :create, {:user => {:name => 'name', :email => 'email', :password => 'password', :admin =>1 }}
            end
            it "should redirect to login" do
@@ -49,7 +64,10 @@ RSpec.describe UsersController, type: :controller do
                allow(fake_result).to receive(:password) {"password"}
                allow(fake_result).to receive(:session_token) {"session_token"}
                allow(fake_result).to receive(:admin) {1}
-               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin => 1).and_return (fake_result)
+               allow(fake_result).to receive(:confirmation_code) {123}
+               allow(fake_result).to receive(:confirmed) {false}
+               expect(SecureRandom).to receive(:base64).and_return(123)
+               expect(User).to receive(:new).with(:name => "name", :email => "email", :password => "password", :admin => 1, confirmation_code: 123, confirmed: false).and_return (fake_result)
                post :create, {:user => {:name => 'name', :email => 'email', :password => 'password', :admin => 1}}
                expect(response).to redirect_to(new_user_path)
            end
@@ -158,5 +176,74 @@ RSpec.describe UsersController, type: :controller do
         end
       end
         
+    end
+    
+    describe 'GET #confirm' do
+        it 'should make sure we have the right user (fail if not current)' do
+            confirm_params = {:user_id => "123", :code => "abcd"}
+            session[:session_token] = 123
+            current_user = User.new(name: "Tom")
+            expect(User).to receive(:find_by_session_token).and_return(current_user)
+      
+            user = double('user')
+            allow(user).to receive(:id) {1}
+            expect(User).to receive(:find).with("123").and_return(user)
+            get :confirm, confirm_params
+            
+            expect(flash[:notice]).to eq("Invalid user id")
+            expect(response).to redirect_to('/')
+        end
+        it 'should make sure we have the right user (fail if invalid)' do
+            confirm_params = {:user_id => "123", :code => "abcd"}
+            session[:session_token] = 123
+            current_user = User.new(name: "Tom")
+            expect(User).to receive(:find_by_session_token).and_return(current_user)
+      
+            user = double('user')
+            allow(user).to receive(:id) {1}
+            expect(User).to receive(:find).with("123").and_return(nil)
+            get :confirm, confirm_params
+            
+            expect(flash[:notice]).to eq("Invalid user id")
+            expect(response).to redirect_to('/')
+        end
+        it 'should notify us if the code is invalid' do
+            confirm_params = {:user_id => "123", :code => "abcd"}
+            session[:session_token] = 123
+      
+            user = double('user')
+            expect(User).to receive(:find_by_session_token).and_return(user)
+            allow(user).to receive(:id) {1}
+            allow(user).to receive(:confirmation_code) {"abcde"}
+            allow(user).to receive(:confirmed) {false}
+            allow(user).to receive(:name) {"Tom"}
+            allow(user).to receive(:admin) {1}
+            expect(User).to receive(:find).with("123").and_return(user)
+            get :confirm, confirm_params
+            
+            expect(flash[:notice]).to eq("Email confirmation unsuccessful...")
+            expect(response).to redirect_to('/')
+        end
+        it 'should work if the code is correct' do
+            confirm_params = {:user_id => "123", :code => "abcd"}
+            session[:session_token] = 123
+      
+            user = double('user')
+            expect(User).to receive(:find_by_session_token).and_return(user)
+            allow(user).to receive(:id) {1}
+            allow(user).to receive(:confirmation_code) {"abcd"}
+            allow(user).to receive(:confirmation_code=)
+            allow(user).to receive(:confirmed) {false}
+            allow(user).to receive(:confirmed=)
+            allow(user).to receive(:name) {"Tom"}
+            allow(user).to receive(:admin) {1}
+            expect(user).to receive(:confirmed=).with(true)
+            expect(user).to receive(:save)
+            expect(User).to receive(:find).with("123").and_return(user)
+            get :confirm, confirm_params
+            
+            expect(flash[:notice]).to eq("Email confirmed!")
+            expect(response).to redirect_to('/')
+        end
     end
 end

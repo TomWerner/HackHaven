@@ -32,6 +32,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(User).to receive(:find_by_session_token).and_return(User.new(name: "Tom"))
       fake_result = double('question')
       expect(Question).to receive(:find).with('1').and_return(fake_result)
+      expect(Compilebox).to receive(:get_languages).and_return([])
       get :show, id: 1
       expect(assigns(:question)).to eq(fake_result)
     end
@@ -46,6 +47,7 @@ RSpec.describe QuestionsController, type: :controller do
         User.create!(name: "Tom", email: "Tom", password: "Password"))
       empty_results = double('item')
       expect(Submission).to receive(:where).with(user_id: 1, question_id: "1").and_return(empty_results)
+      expect(Compilebox).to receive(:get_languages).and_return([])
       expect(empty_results).to receive(:order).with(created_at: :desc).and_return([])
       get :show, id: 1
       expect(assigns(:last_submission)).to eq("")
@@ -59,6 +61,7 @@ RSpec.describe QuestionsController, type: :controller do
         User.create!(name: "Tom", email: "Tom", password: "Password"))
       Submission.create!(code: "first", language: 1, user_id: 1, question_id: "1")
       Submission.create!(code: "second", language: 2, user_id: 1, question_id: "1")
+      expect(Compilebox).to receive(:get_languages).and_return([])
       get :show, id: 1
       
       expect(assigns(:last_submission)).to eq("second")
