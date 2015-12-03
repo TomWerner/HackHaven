@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   #root 'home#index'
   get 'registration/new/:id' => 'registration#new'
 
-  resources :users
+  resources :users do
+    get 'confirm/:code' => 'users#confirm'
+  end
   resources :contests
   match '/login', to: 'sessions#new', via: :get
   match '/login_create', to: 'sessions#create', via: :post  

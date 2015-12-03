@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151116155842) do
+ActiveRecord::Schema.define(version: 20151202035553) do
 
   create_table "announcements", force: :cascade do |t|
     t.string   "title"
@@ -87,6 +87,8 @@ ActiveRecord::Schema.define(version: 20151116155842) do
     t.string  "password_salt"
     t.string  "session_token"
     t.integer "admin"
+    t.boolean "confirmed"
+    t.string  "confirmation_code"
   end
 
 end

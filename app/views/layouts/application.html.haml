@@ -34,22 +34,28 @@
             =link_to "Upcoming Contests", controller: "contests", action: "index"
           %li{:class => (controller.class == TeamsController && controller.action_name == 'index' ? 'active' : '')}
             =link_to "Teams", controller: "teams", action: "index"
-          -if @admin == 0  
-            %li{:class => (controller.class == UsersController ? 'active' : '')}
-              %a{href: '/users'} Edit Users
-            %li{:class => (controller.class == QuestionsController && controller.action_name == 'new' ? 'active' : '')}
-              %a{href: '/questions/new'} New Question
-            %li{:class => (controller.class == ContestsController && controller.action_name == 'new' ? 'active' : '')}
-              %a{href: '/contests/new'} New Contest
-            %li{:class => (controller.class == AnnouncementsController && controller.action_name == 'new' ? 'active' : '')}
-              %a{href: '/announcements/new'} New Announcement
+          -if @admin == 0
+            %li.dropdown
+              %a{:href => '#', class: "dropdown-toggle", "data-toggle" => "dropdown", role: "button", "aria-haspopup" => "true", "aria-expanded" => "false"}
+                Admin Links
+                %span.caret
+              %ul.dropdown-menu
+                %li{:class => (controller.class == UsersController ? 'active' : '')}
+                  %a{href: '/users'} Edit Users
+                %li{:class => (controller.class == QuestionsController && controller.action_name == 'new' ? 'active' : '')}
+                  %a{href: '/questions/new'} New Question
+                %li{:class => (controller.class == ContestsController && controller.action_name == 'new' ? 'active' : '')}
+                  %a{href: '/contests/new'} New Contest
+                %li{:class => (controller.class == AnnouncementsController && controller.action_name == 'new' ? 'active' : '')}
+                  %a{href: '/announcements/new'} New Announcement
+            
             
         %ul.nav.navbar-nav.navbar-right
           %li
-          -if !@current_user
-            = link_to 'Sign up/Login', login_path, :method => :get, :id => 'login'
-          -else
-            = link_to "Logout #{@current_user.name}", logout_path, :method => :delete, :id => 'logout'
+            -if !@current_user
+              = link_to 'Sign up/Login', login_path, :method => :get, :id => 'login'
+            -else
+              = link_to "Logout #{@current_user.name}", logout_path, :method => :delete, :id => 'logout'
             
   %body
     #main.container
