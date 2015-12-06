@@ -1,0 +1,14 @@
+%h2 Create Discussion for #{@question.title}
+
+%div.central-form
+
+  = form_tag question_discussions_path(@question.id) do
+
+    %div.form-group
+      = label :discussion, :title, 'Title'
+      = text_field :discussion, 'title', class: "form-control"
+    %div.form-group
+      = label :discussion, :content, 'Discussion content'
+      = text_area :discussion, 'content', rows:"5", class: "form-control"
+
+    = submit_tag 'Create Discussion', class: "btn btn-primary", id: "submit"

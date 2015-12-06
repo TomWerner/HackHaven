@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     resources :testcases
     post '/submit' => 'questions#submit'
     post '/submit_custom_testcase' => 'questions#submit_custom_testcase'
+    resources :discussions
   end
   
   resources :teams

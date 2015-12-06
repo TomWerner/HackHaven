@@ -1,0 +1,12 @@
+%h2 '#{@discussion.title}', posted by #{User.find(@discussion.user_id).name}
+
+= form_tag question_discussion_path(question_id: @question.id, id: @discussion.id), :method => :put do
+  %div.form-group
+    -if( @admin == 0)
+      = label :discussion, :content, 'Please type your reply below the question'
+    -elsif (@current_user.id == @discussion.user_id)
+      = label :discussion, :content, 'Discussion content'
+    = text_area :discussion, 'content', rows:"5", class: "form-control"
+
+  = link_to 'Back', question_discussions_path(@discussion.question_id), class: 'btn btn-primary'
+  = submit_tag 'Submit', class: "btn btn-primary", id: "submit"

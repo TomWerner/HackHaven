@@ -1,0 +1,24 @@
+%h1 Discussions for #{@question.title}
+
+- @discussions.each do |discussion|
+    %div.panel.panel-default
+        %div.panel-heading
+            =discussion.title
+            %span{:style => "float: right; font-weight: bold"} Posted by: #{User.find(discussion.user_id).name}
+        %div.panel-body 
+            %pre.blank-pre
+                = text_area :discussion, 'content' , rows:"5", class: "description", value: discussion.content, style: "display: none"
+                = text_area :discussion, 'content' , rows:"5", class: "id", value: discussion.id, style: "display: none"
+                %div{ :id => discussion.id, :class => "message"}
+            %div.pull-right
+                -if( @admin == 0)
+                    =link_to "Reply", edit_question_discussion_path(question_id: @question.id, id: discussion.id), class:'btn btn-primary'
+                -elsif (@current_user.id == discussion.user_id)
+                    =link_to "Edit", edit_question_discussion_path(question_id: @question.id, id: discussion.id), class:'btn btn-primary'
+
+=link_to "Back", questions_path, class:'btn btn-primary'
+=link_to "Create Discussion", new_question_discussion_path(@question.id), class:'btn btn-primary'
+
+= javascript_include_tag 'questions_index'
+:javascript
+    $(question_index.setup)
