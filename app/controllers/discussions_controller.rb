@@ -40,5 +40,14 @@ class DiscussionsController < ApplicationController
       redirect_to question_discussions_path(@discussion.question_id)
    end
    
+   def destroy
+      if @admin != 0
+         redirect_to('/') and return
+      end
+      @discussion = Discussion.find(params[:id])
+      @discussion.destroy
+      flash[:notice] = "'#{@discussion.title}' was successfully deleted."
+      redirect_to question_discussions_path(@discussion.question_id)
+   end
    
 end
