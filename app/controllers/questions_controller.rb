@@ -37,6 +37,17 @@ class QuestionsController < ApplicationController
       language: params[:submission][:language],
       correct: ((@results.select {|x| x =~ /^Correct!$/}) == @results)
     })
+    
+    if @submission != nil
+      if !@submission.correct
+        @incorrect_results = @results.select{|result| !result.eql?("Correct!")}
+        @incorrect_example = @incorrect_results.sample(1)[0]
+        number_correct = (@results.count - @incorrect_results.count).to_f
+        total_results = @results.count.to_f
+        @percent_correct = (number_correct / total_results) * 100.0
+      end
+    end
+    
     if @submission != nil && !@already_sub
       if @submission.correct
         @team_a = Team.where(name: @team, contestname: @contest.contestname).first

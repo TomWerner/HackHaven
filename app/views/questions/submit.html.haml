@@ -1,10 +1,15 @@
 %h1 Questions 
 
-- @results.each_with_index do |result, index|
+- if !@submission.correct
+    %div{:class => "alert alert-danger"}
+        #{@percent_correct}% (#{@results.count - @incorrect_results.count} of #{@results.count}) correct
     %div.panel.panel-default
-        %div.panel-heading Test Case #{index}
+        %div.panel-heading Incorrect Example
         %div.panel-body 
             %pre.blank-pre
-                = result
+                = @incorrect_example
+- else
+    %div{:class => "alert alert-success"}
+        Correct! Your code passed all tests!
 
 
