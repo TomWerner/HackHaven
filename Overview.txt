@@ -1,0 +1,19 @@
+Admin account: 
+	- Email: admin@email.edu
+	- Password: password
+Unconfirmed account:
+	- Email: tomwer3+selt_test_1@gmail.com
+	- Password: password
+Confirmed account:
+	- Email: tomwer3@gmail.com
+	- Password: password
+
+When logged in as any of the accounts you should see the announcements, and the Hawkeye challenge under "Upcoming Contests"
+As either of the tomwer3 accounts you should be able to click on questions and see the classic stairstep question.
+If you click solve you can choose your language and create a solution to the problem. If you then click submit, the confirmed
+it should redirect you to the homepage with a message that you need to confirm your account.
+user should take a moment before telling you the result of running your code on our test cases. If you use the unconfirmed user,
+
+If you go to the questions page as the confirmed user, and have code, if you click "Test against custom input"
+you can specify custom standard in input to test your code with. Then you can run custom test cases to check
+your code without penalty.
