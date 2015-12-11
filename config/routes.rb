@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
-  resources :announcements
-end
-
-Rails.application.routes.draw do
+  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   resources :announcements
   resources :registration
   #root 'home#index'
