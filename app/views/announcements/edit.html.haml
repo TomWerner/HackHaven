@@ -12,19 +12,7 @@
 
     = submit_tag 'Update Announcement', class: "btn btn-primary", id: "submit"
     
+= javascript_include_tag 'announcements_new'
 :javascript
-    $(document).ready( function() {
-      $("#announcement_content").markdown({
-        onChange: function(e) {
-          var preview = e.$isPreview;
-          if(preview)
-          {
-            $("#submit").hide();
-          }
-          else
-          {
-            $("#submit").show();
-          }
-        }
-      })
-    });
+    $(announcement_edit.setup)
+    

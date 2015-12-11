@@ -101,7 +101,7 @@ var question_show = {
     },
     
     setup_loading_element: function() {
-        $(function() {
+        var mainFunction = $(function() {
             $('#loading-indicator').hide();  // hide it initially.
             $(document)  
             .ajaxStart(function() {
