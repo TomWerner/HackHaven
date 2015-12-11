@@ -1,6 +1,7 @@
 var question_new = {
     setup: function() {
-        $("#question_description").markdown({
+        var value = $("#question_description");
+        value.markdown({
             onChange: function(e) {
                 var preview = e.$isPreview;
                 if(preview)
@@ -14,4 +15,5 @@ var question_new = {
             }
         });
     }
+
 }

@@ -17,20 +17,8 @@
                 -if( @admin == 0)
                     =link_to "<< Edit >>", edit_announcement_path(announcement), class: "admin"
                     = link_to '<< Del >>', announcement_path(announcement), :method => :delete, :confirm => "Are you sure? Please don\'t do this if you aren't an admin...", class: "admin"
-                
-:javascript
-    $(document).ready( function() {
-    var content = $(".content");
-    var admin = $(".adminValue");
-    var id = $(".id");
-    var i = 0;
-    
-    for (i = 0; i < content.length; i++) { 
-        var el = document.getElementById(id[i].value);
-        el.innerHTML = markdown.toHTML(content[i].value);
-     }
-    } ); 
-    
-   
-    
 
+= javascript_include_tag 'announcements_index'
+:javascript
+    $(announcement_index.setup)
+    
