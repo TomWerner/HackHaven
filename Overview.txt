@@ -17,3 +17,16 @@ user should take a moment before telling you the result of running your code on 
 If you go to the questions page as the confirmed user, and have code, if you click "Test against custom input"
 you can specify custom standard in input to test your code with. Then you can run custom test cases to check
 your code without penalty.
+
+When logged in as an admin, you should be able to create a contest by going to the Create Contest page. Then, when logged in as
+a user, you should be able to register for a contest by either going to the Your Registrations page and following the appropriate link,
+or by going to the Upcoming Contests page and clicking the link of the contest you would like to register for.
+
+When registering for a contest as a user, you should be able to only register for the contest once. You can either select
+None, Create Team, or Existing team for joining a team. If you create a team you are the captain of the team. When you view
+Your Teams on the Your Registrations page, you can view the other members who are on your team. If you are the captain of the team,
+you can destroy the team, and remove or make captain any of the members. If there are no teams when registering, you cannot select
+to be on an existing team. When submitting a question, you must be on a team to receive points for submission. Teams only receive points
+once for each question, so if multiple team members submit multiple submissions for 1 question, points are only received for 1 submission.
+
+A leaderboard is viewable on the Upcoming Contests page to view submission points on a per team basis.
